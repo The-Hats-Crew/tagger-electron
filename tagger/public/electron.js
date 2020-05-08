@@ -1,7 +1,5 @@
 
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow, ipcMain} = require('electron');
 
 const path = require('path');
 const url = require('url');
@@ -15,7 +13,7 @@ function createWindow() {
   mainWindow.on('closed', () => mainWindow = null);
 }
 
-app.on('ready', createWindow);
+app.on('ready',createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
