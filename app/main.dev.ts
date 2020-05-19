@@ -13,6 +13,10 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import server from "./server/api/server";
+import {IpcServer} from "ipc-express";
+
+const ipc = new IpcServer(ipcMain)
 
 export default class AppUpdater {
   constructor() {
@@ -54,18 +58,19 @@ const createWindow = async () => {
     await installExtensions();
   }
 
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
     height: 728,
     webPreferences:
-      process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
-        ? {
-            nodeIntegration: true
-          }
-        : {
-            preload: path.join(__dirname, 'dist/renderer.prod.js')
-          }
+    process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
+    ? {
+      nodeIntegration: true
+    }
+    : {
+      preload: path.join(__dirname, 'dist/renderer.prod.js')
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -83,10 +88,7 @@ const createWindow = async () => {
       mainWindow.focus();
     }
 
-    ipcMain.on("request", (event, arg) => {
-      event.reply("response", arg);
-    })
-
+    ipc.listen(server);
   });
 
   mainWindow.on('closed', () => {
