@@ -1,4 +1,6 @@
-import axios from "axios";
+import {ipcRenderer} from "electron";
+import {IpcClient} from "ipc-express";
+const ipc = new IpcClient(ipcRenderer);
 
 export const SEND_EMAIL_START = "SEND_EMAIL_START";
 export const SEND_EMAIL_SUCCESS = "SEND_EMAIL_SUCCESS";
@@ -14,8 +16,8 @@ const url = 'https://tagger-be-dev.herokuapp.com/';
 
 export function sendEmail(email){
   return function(dispatch){
-    return axios
-    .post(url + 'smtp/send', email)
+    return ipc
+    .post( '/smtp/send', email)
     .then(res => {
       dispatch({type:SEND_EMAIL, payload:res.data})
     })

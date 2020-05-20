@@ -11,7 +11,7 @@ const server = express();
 
 //ROUTERS
 server.use("/emails", messageRouter);
-// server.use("/smtp", smtpRouter)
+server.use("/smtp", smtpRouter)
 // server.use("/imap", imapRouter);
 
 module.exports = server;

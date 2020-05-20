@@ -27,8 +27,8 @@ export function getEmails(label,pageNum,search) {
                     dispatch({type:GET_EMAILS, payload:err})
                 })
         } else {
-            return ipc
-                .get(`/emails/label/${label}/${pageNum}`)
+            return axios
+                .get(url + `emails/label/${label}/${pageNum}`)
                 .then(res => {
                     console.log('INBOX RESS', res.data)
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:false}})
