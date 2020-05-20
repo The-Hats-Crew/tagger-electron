@@ -16,8 +16,7 @@ const Card = props => {
 
     return (
         // From or To defined by which folder in sidebar is selected
-    <div className="snippet" onClick={() => {setViewEmail(props.email.id)
-     console.log(props.email)}}>{/* () => setThreadContact() */}
+    <div className="snippet" onClick={() => {setViewEmail(props.email.id)}}>{/* () => setThreadContact() */}
         <div className="snippet-header row">
             {/* the onClick in here sets the analyticsContact to either who sent the email or who it was sent to depending on the snippetsFilter */}
             <FontAwesomeIcon icon={faUserCircle} />

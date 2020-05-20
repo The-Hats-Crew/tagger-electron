@@ -1,4 +1,7 @@
 import axios from "axios";
+import {ipcRenderer} from 'electron';
+import {IpcClient} from 'ipc-express';
+const ipc = new IpcClient(ipcRenderer)
 const url = process.env.REACT_APP_BACKENDURL
     ? process.env.REACT_APP_BACKENDURL
     : "https://tagger-be-dev.herokuapp.com/";
@@ -8,7 +11,7 @@ export const CLOSE_EMAIL = 'CLOSE_EMAIL';
 
 export function viewEmail(id) {
     return function(dispatch){
-        return axios
+        return ipc
                 .get(url + `emails/email/${id}`)
                 .then(res => {
                     dispatch({type:VIEW_EMAIL, payload: res.data[0]})

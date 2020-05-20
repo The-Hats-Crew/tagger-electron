@@ -34,16 +34,16 @@ const EmailSection = props => {
                     </div>
                     <h2>{props.viewemail.subject}</h2> {/*props.email.subject*/}
                     {!props.isThread ? (
-                        <div 
+                        <div
                             className="thread-message"
-                            dangerouslySetInnerHTML={{ __html: makeHtmlSafe(props.viewemail.email_body) }} 
+                            dangerouslySetInnerHTML={{ __html: makeHtmlSafe(props.viewemail.email_body) }}
                         />
                     ) : (
                         props.viewemail.map(email => (
                             <Single email_body={email.email_body} />
                         ))
                     )}
-                    
+
                     {props.isHidden ? (
                         <EmailButtons />
                         ) : (

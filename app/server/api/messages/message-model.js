@@ -75,7 +75,7 @@ function searchByAny(query, column, keyword) {
   return db('emails')
       .limit(query.limit)
       .offset(query.skip)
-      .where( column, 'ilike', `%${keyword}%`)
+      .where( column, 'like', `%${keyword}%`)
       .select('id', 'name',
           'subject', 'date', 'email_body_text')
       .orderBy('date', "desc")
@@ -85,11 +85,11 @@ function searchAll(query, keyword) {
   return db('emails')
       .limit(query.limit)
       .offset(query.skip)
-      .where( 'from' , 'ilike', `%${keyword}%`)
-      .orWhere('name','ilike', `%${keyword}%` )
-      .orWhere('to','ilike', `%${keyword}%` )
-      .orWhere('subject','ilike', `%${keyword}%` )
-      .orWhere('email_body_text','ilike', `%${keyword}%` )
+      .where( 'from' , 'like', `%${keyword}%`)
+      .orWhere('name','like', `%${keyword}%` )
+      .orWhere('to','like', `%${keyword}%` )
+      .orWhere('subject','like', `%${keyword}%` )
+      .orWhere('email_body_text','like', `%${keyword}%` )
       .select('id', 'name',
           'subject', 'date', 'email_body_text')
       .orderBy('date', "desc")
@@ -97,7 +97,7 @@ function searchAll(query, keyword) {
 
 function searchByCount(column, keyword) {
   return db("emails")
-    .where(column, "ilike", `%${keyword}%`)
+    .where(column, "like", `%${keyword}%`)
     .count("id")
     .first();
 }
@@ -105,13 +105,13 @@ function searchByCount(column, keyword) {
 function getReceived(address) {
   return db('emails')
       .where('from', address)
-      .count('id')
+      .count('id', {as: 'count'})
 }
 
 function getSent(address) {
   return db('emails')
       .where('to', address)
-      .count('id')
+      .count('id', {as: 'count'})
 }
 
 function getNameFromAddress(address) {

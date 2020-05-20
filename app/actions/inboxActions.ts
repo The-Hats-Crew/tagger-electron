@@ -17,8 +17,8 @@ export const GET_EMAILS = 'GET_EMAILS';
 export function getEmails(label,pageNum,search) {
     return function(dispatch){
         if(search){
-            return axios
-                .post(url + `emails/search/name/${pageNum}`,{keyword:label})
+            return ipc
+                .post(`/emails/search/name/${pageNum}`,{keyword:label})
                 .then(res => {
                     console.log('SEARCH RESSSS',res.data)
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:true, label:label}})
@@ -47,8 +47,8 @@ export function nextPage(label,pageNum,search) {
     return function(dispatch){
         if(!search) {
             console.log('label ',label,'PAGE', pageNum)
-            return axios
-                .get(url + `emails/label/${label}/${pageNum}`)
+            return ipc
+                .get(`/emails/label/${label}/${pageNum}`)
                 .then(res => {
                     console.log('NEXT TRIGGERED', res)
                     dispatch({type:NEXT_PAGE, payload: res.data})
@@ -57,8 +57,8 @@ export function nextPage(label,pageNum,search) {
                     dispatch({type:NEXT_PAGE, payload:err})
                 })
         } else {
-            return axios
-                .post(url + `emails/search/name/${pageNum}`, {keyword:label})
+            return ipc
+                .post(`/emails/search/name/${pageNum}`, {keyword:label})
                 .then(res => {
                     console.log('NEXT TRIGGERED-SEARCH ACTION',res.data)
                     dispatch({type:NEXT_PAGE, payload:res.data});
@@ -73,8 +73,8 @@ export const PREV_PAGE = 'PREV_PAGE';
 export function prevPage(label,pageNum,search) {
     return function(dispatch){
         if(!search){
-            return axios
-                .get(url + `emails/label/${label}/${pageNum}`)
+            return ipc
+                .get(`/emails/label/${label}/${pageNum}`)
                 .then(res => {
                     dispatch({type:PREV_PAGE, payload: res.data})
                 })
@@ -82,8 +82,8 @@ export function prevPage(label,pageNum,search) {
                     dispatch({type:PREV_PAGE, payload:err})
                 })
         } else {
-            return axios
-                .post(url + `emails/search/name/${pageNum}`, {keyword:label})
+            return ipc
+                .post(`/emails/search/name/${pageNum}`, {keyword:label})
                 .then(res => dispatch({type:PREV_PAGE,payload:res.data}))
                 .catch(err => dispatch({type:PREV_PAGE, payload:err}))
         }
