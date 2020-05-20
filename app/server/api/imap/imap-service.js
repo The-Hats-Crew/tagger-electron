@@ -17,7 +17,7 @@ async function getLatestMail(imapUser, imapPassword, imapServer) {
   const taggerUserId = 1; // TEMP SINGLE USER
   const lastMessage = await getLastMessageByUserId(taggerUserId);
   const lastMessageId = lastMessage ? lastMessage.uid : 1;
-  
+
   const imapConnection = await imapSimple.connect({
     imap: {
       user: imapUser,
@@ -46,10 +46,9 @@ async function getLatestMail(imapUser, imapPassword, imapServer) {
   if (lastMessageId != 0) { // the searchResults will always contain the last email, so we remove it
     searchResults.shift();
   }
-  console.log(JSON.stringify(searchResults));
 
   console.log(`IMAP returned ${searchResults.length} new messages`);
-  
+
   const parsedMessages = await parseImapSearchResults(searchResults);
   const dboMessages = parsedMessagesToDBO(parsedMessages);
 

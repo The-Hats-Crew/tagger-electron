@@ -5,7 +5,8 @@ module.exports = { auth };
 function auth(req, res, next) {
     const CLIENT_ID = process.env.CLIENT_ID;
     const client = new OAuth2Client(CLIENT_ID);
-    const { id_token } = req.body;
+    console.log("AUTH")
+    // const { id_token } = req.body;
 
     // async function verify() {
     //     const ticket = await client.verifyIdToken({

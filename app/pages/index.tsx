@@ -17,7 +17,7 @@ const Index = (props) => {
 
   useEffect(() => {
     async function getEmails() {
-      const { data } = await ipc.post("/emails", { email: "taggerlabs20@gmail.com" });
+      const { data } = await ipc.get("/emails/label/inbox/1");
       console.log(data);
     }
     getEmails();

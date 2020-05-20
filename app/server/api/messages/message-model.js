@@ -35,7 +35,7 @@ function getEmailList(query, label) {
       .limit(query.limit)
       .offset(query.skip)
       .orderBy('date', "desc")
-      .where('labels', 'ilike', `%${label}%`)
+      .where('labels', 'like', `%${label}%`)
       .select('id', 'name',
           'subject', 'date', 'email_body_text')
 
@@ -44,7 +44,7 @@ function getEmailList(query, label) {
 function getEmailCountByLabelForUser(label, userId) {
   return db("emails")
     .where("user_id", userId)
-    .where('labels', 'ilike', `%${label}%`)
+    .where('labels', 'like', `%${label}%`)
     .count("id").first();
 }
 

@@ -1,4 +1,7 @@
 import axios from "axios";
+import {IpcClient} from "ipc-express";
+import {ipcRenderer} from 'electron';
+const ipc = new IpcClient(ipcRenderer);
 const url = process.env.REACT_APP_BACKENDURL
     ? process.env.REACT_APP_BACKENDURL
     : "https://tagger-be-dev.herokuapp.com/";
@@ -24,13 +27,14 @@ export function getEmails(label,pageNum,search) {
                     dispatch({type:GET_EMAILS, payload:err})
                 })
         } else {
-            return axios
-                .get(url + `emails/label/${label}/${pageNum}`)
+            return ipc
+                .get(`/emails/label/${label}/${pageNum}`)
                 .then(res => {
                     console.log('INBOX RESS', res.data)
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:false}})
                 })
                 .catch(err => {
+                  console.log(err);
                     dispatch({type:GET_EMAILS, payload:err})
                 })
         }

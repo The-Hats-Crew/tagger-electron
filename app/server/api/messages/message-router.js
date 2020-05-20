@@ -60,7 +60,7 @@ router.get('/label/:label/:page', (req,res) => {
 
   if (page < 0 || page === 0) {
     response = { "error": true, "message": "invalid page number, should start with 1" };
-    return res.json(response)
+    return res.send(response)
   }
 
   query.skip = 25 * (page - 1)
@@ -70,13 +70,16 @@ router.get('/label/:label/:page', (req,res) => {
       .then(emails => {
           Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
             .then(count => {
-                res.json({
+                res.send({
                   totalCount: count,
                   messages: emails
                 });
           })
       })
-      .catch(error => res.send(error))
+      .catch(error => {
+        console.log(error);
+        res.send(error)
+      })
 });
 
 // ********** Analytics **********
@@ -327,7 +330,6 @@ router.post("/", auth, async (req, res) => {
     let uid = 1;
     let newUserEmail;
 
-    req.setTimeout(600000*6);
     // Find the user in the database, grab the id
     const user = await Users.findUser(email);
     if (user) {
@@ -347,15 +349,13 @@ router.post("/", auth, async (req, res) => {
     console.log(emails, "WHY IS THIS FAILING?")
     emails
       ? res
-          .status(200)
-          .json({ allEmailsFetched: { fetched: true, date: Date.now() } })
+          .send({ allEmailsFetched: { fetched: true, date: Date.now() } })
       : res
-          .status(400)
-          .json({ fetched: false, msg: "Emails failed to fetch." });
+          .send({ fetched: false, msg: "Emails failed to fetch." });
   } catch (err) {
+    console.log(err);
     res
-      .status(500)
-      .json({ fetched: false, err, msg: "The entire request failed." });
+      .send({ fetched: false, err, msg: "The entire request failed." });
   }
 });
 
