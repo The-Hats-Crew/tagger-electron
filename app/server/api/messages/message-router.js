@@ -27,7 +27,7 @@ router.get('/email/:id', (req,res) => {
   const id = req.params.id;
   Messages.getEmail(id)
       .then(emails => {
-        res.json(emails)
+        res.send(emails)
       })
       .catch(error => res.send(error))
 })
@@ -36,7 +36,7 @@ router.get('/email/thread/:id', (req,res) => {
   const id = req.params.id;
   Messages.getThreadList(id)
       .then(emails => {
-        res.json(emails)
+        res.send(emails)
       })
       .catch(error => res.send(error))
 } )
@@ -47,7 +47,7 @@ router.get('/email/thread-message/:id', (req,res) => {
       .then(email => {
         Messages.getThreadList(email[0].gmThreadID)
             .then(response => {
-              res.json(response)
+              res.send(response)
             })
       })
       .catch(error => res.send(error))
@@ -92,7 +92,7 @@ router.post('/analytics', (req,res) => {
               .then(sent => {
                 Messages.getNameFromAddress(address)
                     .then(name => {
-                      res.json({
+                      res.send({
                         name: name[0].name,
                         received: received[0].count,
                         sent: sent[0].count
@@ -115,7 +115,7 @@ router.post("/search/dev/:page", (req,res) => {
       error: true,
       message: "invalid page number, should start with 1",
     };
-    return res.json(response);
+    return res.send(response);
   }
 
   query.skip = 25 * (page - 1);
@@ -123,7 +123,7 @@ router.post("/search/dev/:page", (req,res) => {
 
   Messages.searchAll(query, keyword)
       .then((result) => {
-        res.json(result)
+        res.send(result)
       })
       .catch((err) => {
         res.send(err);
@@ -141,7 +141,7 @@ router.post("/search/:column/:page", (req, res) => {
       error: true,
       message: "invalid page number, should start with 1",
     };
-    return res.json(response);
+    return res.send(response);
   }
 
   query.skip = 25 * (page - 1);
@@ -151,7 +151,7 @@ router.post("/search/:column/:page", (req, res) => {
     .then((result) => {
       Messages.searchByCount(column, keyword)
         .then((count) => {
-          res.json({
+          res.send({
             totalCount: count,
             messages: result,
           });
