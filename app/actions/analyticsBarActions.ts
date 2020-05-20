@@ -1,6 +1,7 @@
-import Axios from "axios";
 const url = 'https://tagger-be-dev.herokuapp.com/';
-
+import {IpcClient} from "ipc-express";
+import {ipcRenderer} from "electron"
+const ipc = new IpcClient(ipcRenderer)
 export const SET_ANALYTICS_BAR = "SET_ANALYTICS_BAR";
 export const SET_ANALYTICS_BAR_CONTACT = 'SET_ANALYTICS_BAR_CONTACT';
 
@@ -12,8 +13,8 @@ export const setAnalyticsBar = () => dispatch => {
 
 export function setAnalyticsBarContact(email){
     return function (dispatch){
-        return Axios
-                .post(url + `emails/analytics`, {address:email})
+        return ipc
+                .post(`/emails/analytics`, {address:email})
                 .then(res => {
                     dispatch({
                         type: SET_ANALYTICS_BAR_CONTACT,

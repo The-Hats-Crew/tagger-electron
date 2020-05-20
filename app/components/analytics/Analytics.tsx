@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setAnalyticsBar } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Analytics = props => {
+
+  useEffect(() => {
+    console.log(props.receivedEmails)
+  }, [])
 
    const closeAnalytics = () => {
         props.setAnalyticsBar(false)
@@ -22,15 +26,15 @@ const Analytics = props => {
             <h3>{props.address}</h3>
             <h2>{props.name}</h2>
             {/* maps over over the everyone it was sent to. prevously it was done mapping over a to object */}
-        
+
             </div>
-            
+
             <div className="analytics-body">
 
               <p>Total messages</p>
               <div style={{width:"100%"}} className='barwidth'>
                 <span className="num">{props.totalEmails}</span>
-              </div> 
+              </div>
 
              <p>Sent messages</p>
              <div style={{width:sentWidth}} className='barwidth'>

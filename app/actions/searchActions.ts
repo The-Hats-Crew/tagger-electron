@@ -1,5 +1,6 @@
-import axios from 'axios';
-
+import {ipcRenderer} from 'electron';
+import {IpcClient} from 'ipc-express';
+const ipc = new IpcClient(ipcRenderer);
 const url = process.env.REACT_APP_BACKENDURL
     ? process.env.REACT_APP_BACKENDURL
     : "https://tagger-be-dev.herokuapp.com/";
@@ -8,8 +9,8 @@ export const SEARCH_KEYWORD = "SEARCH_KEYWORD";
 
 export function searchKeyword(keyword){
     return function(dispatch){
-        return axios
-        .post(url + `emails/search/name/1`, {keyword:keyword})
+        return ipc
+        .post(`/emails/search/name/1`, {keyword:keyword})
         .then(res => {
             console.log('SEARCH ACTION',res.data)
             dispatch({type:SEARCH_KEYWORD, payload:{emails:res.data, keyword:keyword}});
@@ -28,7 +29,7 @@ export const CHANGE_LISTING = 'CHANGE_LISTING';
 
 export function changeListing(keyword){
     return function(dispatch){
-        return axios
+        return ipc
         .post(url + `emails/search/name/1`, {keyword:keyword})
         .then(res => dispatch({type:CHANGE_LISTING, payload:{emails:res.data, keyword:keyword}}))
         .catch(err => dispatch({type:CHANGE_LISTING, payload:err}))
