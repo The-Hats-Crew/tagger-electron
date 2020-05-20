@@ -6,7 +6,6 @@ import EmailOperations from './EmailOperations';
 import Operations from './Operations';
 import Single from './Single';
 import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";

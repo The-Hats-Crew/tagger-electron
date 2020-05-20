@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
 import Card from './Card';
 
 const List = props => {
