@@ -10,6 +10,7 @@ const Users = require("../users/user-model");
 const Messages = require("./message-model");
 const Tags = require("../tags/tag-model");
 const Mails = require("../imap/imap-model");
+const imapService = require("../imap/imap-service");
 const { auth } = require("../auth/auth-middleware");
 const { imapNestedFolders } = require("./message-middleware");
 
@@ -66,7 +67,9 @@ router.get('/label/:label/:page', (req,res) => {
   query.skip = 25 * (page - 1)
   query.limit = 25
 
-  Messages.getEmailList(query, label)
+  imapService.checkForNewMail()
+  .then(() => {
+    Messages.getEmailList(query, label)
       .then(emails => {
           Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
             .then(count => {
@@ -80,6 +83,8 @@ router.get('/label/:label/:page', (req,res) => {
         console.log(error);
         res.send(error)
       })
+  })
+
 });
 
 // ********** Analytics **********

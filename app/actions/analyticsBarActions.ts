@@ -5,9 +5,10 @@ const ipc = new IpcClient(ipcRenderer)
 export const SET_ANALYTICS_BAR = "SET_ANALYTICS_BAR";
 export const SET_ANALYTICS_BAR_CONTACT = 'SET_ANALYTICS_BAR_CONTACT';
 
-export const setAnalyticsBar = () => dispatch => {
+export const setAnalyticsBar = (toggle) => dispatch => {
     dispatch({
-        type: SET_ANALYTICS_BAR
+        type: SET_ANALYTICS_BAR,
+        payload: toggle
     });
 };
 

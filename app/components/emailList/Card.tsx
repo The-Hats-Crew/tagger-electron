@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { viewEmail, discard } from '../../actions';
+import { viewEmail, discard, setAnalyticsBarContact } from '../../actions';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
@@ -9,14 +9,15 @@ import ShowDate from '../../utils/ShowDate';
 
 const Card = props => {
 
-    const setViewEmail = id => {
-        props.viewEmail(id);
+    const setViewEmail = email => {
+        props.setAnalyticsBarContact(email.from)
+        props.viewEmail(email.id);
         props.discard();
     }
 
     return (
         // From or To defined by which folder in sidebar is selected
-    <div className="snippet" onClick={() => {setViewEmail(props.email.id)}}>{/* () => setThreadContact() */}
+    <div className="snippet" onClick={() => {setViewEmail(props.email)}}>{/* () => setThreadContact() */}
         <div className="snippet-header row">
             {/* the onClick in here sets the analyticsContact to either who sent the email or who it was sent to depending on the snippetsFilter */}
             <FontAwesomeIcon icon={faUserCircle} />
@@ -40,4 +41,4 @@ const Card = props => {
     );
 }
 
-export default connect(null,{viewEmail,discard})(Card);
+export default connect(null,{viewEmail,discard, setAnalyticsBarContact})(Card);

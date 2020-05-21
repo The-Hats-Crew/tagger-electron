@@ -8,7 +8,7 @@ const Analytics = props => {
 
   useEffect(() => {
     console.log(props.receivedEmails)
-  }, [])
+  }, [props.address])
 
    const closeAnalytics = () => {
         props.setAnalyticsBar(false)
@@ -52,13 +52,14 @@ const Analytics = props => {
     );
 };
 
-const mapStateToProps = ({analyticsbar}) => ({
+const mapStateToProps = ({analyticsbar, viewEmail}) => ({
 
   totalEmails:analyticsbar.totalEmails,
   sentEmails:analyticsbar.sentEmails,
   receivedEmails:analyticsbar.receivedEmails,
   address:analyticsbar.address,
-  name:analyticsbar.name
+  name:analyticsbar.name,
+  viewemail: viewEmail.viewemail
 })
 
 export default connect(mapStateToProps,{setAnalyticsBar})(Analytics);

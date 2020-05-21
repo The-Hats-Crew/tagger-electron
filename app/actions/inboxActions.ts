@@ -28,7 +28,7 @@ export function getEmails(label,pageNum,search) {
                 })
         } else {
             return ipc
-                .get(`/emails/label/${label}/${pageNum}`)
+                .get(url + `emails/label/${label}/${pageNum}`)
                 .then(res => {
                     console.log('INBOX RESS', res.data)
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:false}})
@@ -45,6 +45,7 @@ export const NEXT_PAGE = 'NEXT_PAGE';
 
 export function nextPage(label,pageNum,search) {
     return function(dispatch){
+      console.log(label);
         if(!search) {
             console.log('label ',label,'PAGE', pageNum)
             return ipc

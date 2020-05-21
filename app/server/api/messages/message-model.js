@@ -36,7 +36,7 @@ function getEmailList(query, label) {
       .offset(query.skip)
       .orderBy('date', "desc")
       .where('labels', 'like', `%${label}%`)
-      .select('id', 'name',
+      .select('id', 'from',  'name',
           'subject', 'date', 'email_body_text')
 
 }
@@ -45,7 +45,7 @@ function getEmailCountByLabelForUser(label, userId) {
   return db("emails")
     .where("user_id", userId)
     .where('labels', 'like', `%${label}%`)
-    .count("id").first();
+    .count("id", {as: "count"}).first();
 }
 
 function getEmail(id) {
@@ -98,7 +98,7 @@ function searchAll(query, keyword) {
 function searchByCount(column, keyword) {
   return db("emails")
     .where(column, "like", `%${keyword}%`)
-    .count("id")
+    .count("id", {as: 'count'})
     .first();
 }
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import Card from './Card';
 
 const List = props => {
-    
+
+
     const toggleIsComposing = () => {
         props.setComposer(true)
     }
@@ -12,12 +13,12 @@ const List = props => {
     return (
         props.emails !== undefined && (
         <SimpleBar forceVisible="y" autoHide={true} style={{height:'100%'}}>
-        {props.emails.map(email => {
-            return (
-                <Card key={email.id} email={email} />
-            );
-        })}
-        <div className="compose-circle-btn btn" onClick={toggleIsComposing}>+</div>
+          {props.emails.map(email => {
+              return (
+                  <Card key={email.id} email={email} />
+              );
+          })}
+          <div className="compose-circle-btn btn" onClick={toggleIsComposing}>+</div>
         </SimpleBar>
         )
     )

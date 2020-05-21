@@ -106,7 +106,9 @@ function addMessagesToDb(dboMessages) {
 
 function checkForNewMail() {
   console.log("Checking for new messages...");
-  getLatestMail("taggerlabs20@gmail.com", "Lambdalabs20!", "imap.gmail.com"); // TEMP TEMP TEMP
+    return new Promise((resolve, reject) => {
+      resolve(getLatestMail("taggerlabs20@gmail.com", "Lambdalabs20!", "imap.gmail.com")); // TEMP TEMP TEMP
+    })
 }
 
 module.exports = {
