@@ -14,6 +14,7 @@ import { makeHtmlSafe } from "../../utils/MessageHelper";
 
 const EmailSection = props => {
 
+
     const handleAnalyticsBar = (email) => {
         props.setAnalyticsBar(!props.analyticsBar)
         props.setAnalyticsBarContact(email)

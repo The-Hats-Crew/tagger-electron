@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getEmails, setLabel, closeEmail, resetSearch} from '../../actions';
+import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding} from '../../actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInbox,
@@ -14,6 +14,8 @@ const Folders = props => {
     props.resetSearch()
     props.closeEmail()
     props.setLabel(folder)
+    props.setAnalyticsBar(false);
+    props.setSliding(false);
   }
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const Folders = props => {
     props.getEmails(props.label,props.pageNum,props.isSearch)
     //eslint-disable-next-line
   },[props.label])
-  
+
     return (
         <nav>
         {/* this onClick sets the snippets to filter email by received */}
@@ -40,4 +42,4 @@ const mapStateToProps = ({ inbox }) => ({
   isSearch:inbox.isSearch
 })
 
-export default connect(mapStateToProps,{getEmails,closeEmail,setLabel,resetSearch})(Folders);
+export default connect(mapStateToProps,{getEmails,closeEmail,setLabel,resetSearch, setAnalyticsBar, setSliding})(Folders);

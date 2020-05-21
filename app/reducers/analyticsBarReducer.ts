@@ -13,7 +13,7 @@ export const analyticsBarReducer = (state = initialState, {type,payload}) => {
         case SET_ANALYTICS_BAR:
             return {
                 ...state,
-                analyticsbar:!state.analyticsbar
+                analyticsbar:payload === undefined ? !state.analyticsbar : payload
             };
         case SET_ANALYTICS_BAR_CONTACT:
             return {
@@ -26,6 +26,6 @@ export const analyticsBarReducer = (state = initialState, {type,payload}) => {
                 address:payload.address
             }
         default:
-            return state; 
+            return state;
     }
 }

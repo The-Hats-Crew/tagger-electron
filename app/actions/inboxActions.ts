@@ -45,6 +45,7 @@ export const NEXT_PAGE = 'NEXT_PAGE';
 
 export function nextPage(label,pageNum,search) {
     return function(dispatch){
+      console.log(label);
         if(!search) {
             console.log('label ',label,'PAGE', pageNum)
             return ipc
