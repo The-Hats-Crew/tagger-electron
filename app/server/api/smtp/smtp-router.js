@@ -38,13 +38,13 @@ smtpRouter.post("/send", (req, res) => {
     if (error) {
       console.log("smtpRouter ERROR: " + error);
 
-      res.status(400).json({
+      res.send({
         smtpError: error
       });
     } else {
       console.log("smtpRouter SUCCESS: " + result);
 
-      res.status(200).json({
+      res.send({
         smtpResponse: result
       });
     }
