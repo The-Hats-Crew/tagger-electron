@@ -1,0 +1,12 @@
+@import "../node_modules/simplebar/dist/simplebar.min.css";
+
+* {
+    box-sizing: border-box;
+}
+body {
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+    background-color: $bg;
+    overflow: hidden;
+    margin: 0;
+}

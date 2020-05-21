@@ -1,0 +1,54 @@
+.btn {
+    cursor: pointer;
+}
+
+.sidebar-btn, .back-btn, .sidebar-mob-btn {
+    color: $darkGrey;
+    font-size: 1rem;
+    left:2rem;
+}
+
+.compose {
+    margin: 1.2rem 0;
+    height: 35px;
+    width: 10rem;
+    background-color: $accentBlue;
+    border: none;
+    border-radius: 5px;
+    color: $white;
+    font-size: 0.9rem;
+    align-self: center;
+}
+
+.send {
+    padding: 10px 40px;
+    border-radius: 3px;
+    border:1px solid $accentBlue;
+    background-color:$accentBlue;
+    color:$white;
+    font-size: .8rem;
+    max-width: 120px;
+    align-self: flex-end;
+    margin: 0.5rem 0;
+    margin-right: .5rem;
+}
+
+.discard, .email-ops {
+    padding: 10px 40px;
+    border-radius: 3px;
+    margin-right: 1rem;
+    border: 1px solid $border;
+    font-size: .8rem;
+    margin: 0.5rem 0;
+}
+
+.email-ops {
+    margin-right: .5rem;
+}
+
+.logout {
+    color: $darkGrey;
+    font-size: 1.2rem;
+    position: absolute;
+    right:2rem;
+}
