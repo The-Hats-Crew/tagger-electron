@@ -4,11 +4,7 @@ import { setAnalyticsBar } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const Analytics = props => {
-
-  useEffect(() => {
-    console.log(props.receivedEmails)
-  }, [props.address])
+export const Analytics = props => {
 
    const closeAnalytics = () => {
         props.setAnalyticsBar(false)
@@ -32,17 +28,17 @@ const Analytics = props => {
             <div className="analytics-body">
 
               <p>Total messages</p>
-              <div style={{width:"100%"}} className='barwidth'>
+              <div id="total_emails" style={{width:"100%"}} className='barwidth'>
                 <span className="num">{props.totalEmails}</span>
               </div>
 
              <p>Sent messages</p>
-             <div style={{width:sentWidth}} className='barwidth'>
+             <div id="sent_emails" style={{width:sentWidth}} className='barwidth'>
                 <span className="num">{props.sentEmails}</span>
               </div>
 
              <p>Recieved messages</p>
-             <div style={{width:receivedWidth}} className='barwidth'>
+             <div id="received_emails" style={{width:receivedWidth}} className='barwidth'>
                 <span className="num">{props.receivedEmails}</span>
               </div>
 

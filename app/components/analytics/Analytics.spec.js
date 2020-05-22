@@ -3,35 +3,60 @@ import { spy } from 'sinon';
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { BrowserRouter as Router } from 'react-router-dom';
 import renderer from 'react-test-renderer';
-import Analytics from "./Analytics";
+import {Analytics} from "./Analytics";
 
 Enzyme.configure({ adapter: new Adapter() });
 
 function setup() {
   const actions = {
-    name: spy(),
-    address: spy(),
-    totalEmails: spy(),
-    sentEmails: spy(),
-    receivedEmails: spy()
+    name: "Anthony",
+    address: "anthonyk2020@gmail.com",
+    totalEmails: 13,
+    sentEmails: 12,
+    receivedEmails: 20
   };
   const component = shallow(<Analytics {...actions} />);
   return {
     component,
     actions,
     buttons: component.find('button'),
-    s: component.find('.num'),
-
+    total: component.find('#total_emails span.num'),
+    sent: component.find('#sent_emails span.num'),
+    received: component.find("#received_emails span.num")
   };
 }
 
-describe('Counter component', () => {
-  it('should should display count', () => {
-    const { s } = setup();
-    expect(s.text()).toMatch(/^1$/);
+describe('Analytics component', () => {
+  it("should render without crashing", () => {
+    const {component} = setup();
+    expect(component).not.toBeNull()
+  })
+
+  it('should display total emails', () => {
+    const { total } = setup();
+    expect(total.text()).toMatch(/^13$/);
   });
+
+  it('should display sent emails', () => {
+    const { sent } = setup();
+    expect(sent.text()).toMatch(/^12$/);
+  });
+
+  it('should display sent emails', () => {
+    const { received } = setup();
+    expect(received.text()).toMatch(/^20$/);
+  });
+
+  it("should display correct email address", () => {
+    const { component } = setup();
+    expect(component.find('h3').text()).toMatch(/^anthonyk2020@gmail.com$/);
+  })
+
+  it("should display correct name", () => {
+    const { component } = setup();
+    expect(component.find('h2').text()).toMatch(/^Anthony$/);
+  })
 
 
 //   it('should first button should call increment', () => {
