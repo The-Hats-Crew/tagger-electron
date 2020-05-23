@@ -90,7 +90,6 @@ const createWindow = async () => {
     }
 
     ipc.listen(server);
-    setupBackgroundTimers();
   });
 
   mainWindow.on('closed', () => {
@@ -125,11 +124,4 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-function setupBackgroundTimers() {
-  const numMinutes = 10;
 
-  // update after 1 second, then every 10 minutes
-  console.log(`Started imapService.checkForNewMail every ${numMinutes} minutes`);
-  setTimeout(imapService.checkForNewMail, 1000);
-  setInterval(imapService.checkForNewMail, 1000 * 60 * numMinutes);
-}

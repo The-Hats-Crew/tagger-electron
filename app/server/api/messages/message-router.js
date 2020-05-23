@@ -1,18 +1,18 @@
 // ********** DEPENDENCIES **********
-const router = require("express").Router();
-const axios = require("axios");
-const rateLimit = require("axios-rate-limit");
-const fs = require("fs");
-const imaps = require("imap-simple");
+const router = require('express').Router();
+const axios = require('axios');
+const rateLimit = require('axios-rate-limit');
+const fs = require('fs');
+const imaps = require('imap-simple');
 
 // ********** MODELS **********
-const Users = require("../users/user-model");
-const Messages = require("./message-model");
-const Tags = require("../tags/tag-model");
-const Mails = require("../imap/imap-model");
-const imapService = require("../imap/imap-service");
-const { auth } = require("../auth/auth-middleware");
-const { imapNestedFolders } = require("./message-middleware");
+const Users = require('../users/user-model');
+const Messages = require('./message-model');
+const Tags = require('../tags/tag-model');
+const Mails = require('../imap/imap-model');
+const imapService = require('../imap/imap-service');
+const { auth } = require('../auth/auth-middleware');
+const { imapNestedFolders } = require('./message-middleware');
 
 // ********** GLOBAL VARIABLES **********
 
@@ -24,93 +24,87 @@ http.getMaxRPS();
 
 // ********** NEW FRONT END ENDPOINTS **********
 
-router.get('/email/:id', (req,res) => {
+router.get('/email/:id', (req, res) => {
   const id = req.params.id;
   Messages.getEmail(id)
-      .then(emails => {
-        res.send(emails)
-      })
-      .catch(error => res.send(error))
-})
+    .then(emails => {
+      res.send(emails);
+    })
+    .catch(error => res.send(error));
+});
 
-router.get('/email/thread/:id', (req,res) => {
+router.get('/email/thread/:id', (req, res) => {
   const id = req.params.id;
   Messages.getThreadList(id)
-      .then(emails => {
-        res.send(emails)
-      })
-      .catch(error => res.send(error))
-} )
+    .then(emails => {
+      res.send(emails);
+    })
+    .catch(error => res.send(error));
+});
 
-router.get('/email/thread-message/:id', (req,res) => {
+router.get('/email/thread-message/:id', (req, res) => {
   const id = req.params.id;
   Messages.getThreadID(id)
-      .then(email => {
-        Messages.getThreadList(email[0].gmThreadID)
-            .then(response => {
-              res.send(response)
-            })
-      })
-      .catch(error => res.send(error))
-})
+    .then(email => {
+      Messages.getThreadList(email[0].gmThreadID).then(response => {
+        res.send(response);
+      });
+    })
+    .catch(error => res.send(error));
+});
 
-router.get('/label/:label/:page', (req,res) => {
+router.get('/label/:label/:page', (req, res) => {
   const page = req.params.page;
-  let query = {}
+  let query = {};
   let label = req.params.label;
 
   if (page < 0 || page === 0) {
-    response = { "error": true, "message": "invalid page number, should start with 1" };
-    return res.send(response)
+    response = {
+      error: true,
+      message: 'invalid page number, should start with 1'
+    };
+    return res.send(response);
   }
 
-  query.skip = 25 * (page - 1)
-  query.limit = 25
+  query.skip = 25 * (page - 1);
+  query.limit = 25;
 
-  imapService.checkForNewMail()
-  .then(() => {
-    Messages.getEmailList(query, label)
-      .then(emails => {
-          Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
-            .then(count => {
-                res.send({
-                  totalCount: count,
-                  messages: emails
-                });
-          })
-      })
-      .catch(error => {
-        console.log(error);
-        res.send(error)
-      })
-  })
-
+  Messages.getEmailList(query, label)
+    .then(emails => {
+      Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
+        .then(count => {
+          res.send({
+            totalCount: count,
+            messages: emails
+          });
+        });
+    })
+    .catch(error => {
+      console.log(error);
+      res.send(error);
+    });
 });
 
 // ********** Analytics **********
 
-router.post('/analytics', (req,res) => {
-  const address = req.body.address
-  Messages.getReceived(address)
-      .then(received => {
-          Messages.getSent(address)
-              .then(sent => {
-                Messages.getNameFromAddress(address)
-                    .then(name => {
-                      res.send({
-                        name: name[0].name,
-                        received: received[0].count,
-                        sent: sent[0].count
-                      });
-                    })
-              })
-      })
-
-})
+router.post('/analytics', (req, res) => {
+  const address = req.body.address;
+  Messages.getReceived(address).then(received => {
+    Messages.getSent(address).then(sent => {
+      Messages.getNameFromAddress(address).then(name => {
+        res.send({
+          name: name[0].name,
+          received: received[0].count,
+          sent: sent[0].count
+        });
+      });
+    });
+  });
+});
 
 // ********** New Search Routes **********
 
-router.post("/search/dev/:page", (req,res) => {
+router.post('/search/dev/:page', (req, res) => {
   const page = req.params.page;
   const keyword = req.body.keyword;
   let query = {};
@@ -118,7 +112,7 @@ router.post("/search/dev/:page", (req,res) => {
   if (page < 0 || page === 0) {
     response = {
       error: true,
-      message: "invalid page number, should start with 1",
+      message: 'invalid page number, should start with 1'
     };
     return res.send(response);
   }
@@ -127,15 +121,15 @@ router.post("/search/dev/:page", (req,res) => {
   query.limit = 25;
 
   Messages.searchAll(query, keyword)
-      .then((result) => {
-        res.send(result)
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-})
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
 
-router.post("/search/:column/:page", (req, res) => {
+router.post('/search/:column/:page', (req, res) => {
   const column = req.params.column;
   const page = req.params.page;
   const keyword = req.body.keyword;
@@ -144,7 +138,7 @@ router.post("/search/:column/:page", (req, res) => {
   if (page < 0 || page === 0) {
     response = {
       error: true,
-      message: "invalid page number, should start with 1",
+      message: 'invalid page number, should start with 1'
     };
     return res.send(response);
   }
@@ -153,24 +147,34 @@ router.post("/search/:column/:page", (req, res) => {
   query.limit = 25;
 
   Messages.searchByAny(query, column, keyword)
-    .then((result) => {
-      Messages.searchByCount(column, keyword)
-        .then((count) => {
-          res.send({
-            totalCount: count,
-            messages: result,
-          });
+    .then(result => {
+      Messages.searchByCount(column, keyword).then(count => {
+        res.send({
+          totalCount: count,
+          messages: result
         });
+      });
     })
-    .catch((err) => {
+    .catch(err => {
       res.send(err);
     });
+});
+
+// FETCHES NEW EMAILS FROM EMAIL SERVER
+router.get('/', auth, async (req, res) => {
+  imapService.checkForNewMail()
+  .then(res => {
+    res.send({success: true});
+  })
+  .catch(err => {
+    res.send({success: false})
+  });
 });
 
 // ********** THE ROUTES WITH STREAMING **********
 
 // CREATE STREAM FILE
-router.post("/stream", auth, async (req, res) => {
+router.post('/stream', auth, async (req, res) => {
   try {
     const { email } = req.body;
     let userId;
@@ -201,12 +205,12 @@ router.post("/stream", auth, async (req, res) => {
     console.log(err);
     res
       .status(500)
-      .json({ message: "Server was unable to stream emails", err });
+      .json({ message: 'Server was unable to stream emails', err });
   }
 });
 
 // SEND STREAM TO DS
-router.post("/train", auth, async (req, res) => {
+router.post('/train', auth, async (req, res) => {
   try {
     const { email } = req.body;
     let DsUser;
@@ -230,7 +234,7 @@ router.post("/train", auth, async (req, res) => {
         from: email.from,
         msg: email.email_body_text,
         subject: email.subject,
-        content_type: " "
+        content_type: ' '
       };
       DsEmailStructure.push(newStruc);
     });
@@ -249,25 +253,25 @@ router.post("/train", auth, async (req, res) => {
       );
       // Posts read stream to DS Api
       const post = await axios({
-        method: "POST",
+        method: 'POST',
         url:
-        "http://ec2-3-19-30-227.us-east-2.compute.amazonaws.com/train_model",
-          // "http://ec2-54-185-247-144.us-west-2.compute.amazonaws.com/train_model",
+          'http://ec2-3-19-30-227.us-east-2.compute.amazonaws.com/train_model',
+        // "http://ec2-54-185-247-144.us-west-2.compute.amazonaws.com/train_model",
         data: src
       });
       post
         ? res.status(200).json({ message: `Trained a model for ${email}` })
         : res
             .status(500)
-            .json({ message: "Server was unable to connect to DS" });
+            .json({ message: 'Server was unable to connect to DS' });
     });
   } catch {
-    res.status(500).json({ message: "Server was unable to send data to DS" });
+    res.status(500).json({ message: 'Server was unable to send data to DS' });
   }
 });
 
 // SMART SEARCH PREDICTION
-router.post("/predict", auth, async (req, res) => {
+router.post('/predict', auth, async (req, res) => {
   try {
     const { email, uid, from, msg, subject } = req.body;
     let DsUser;
@@ -275,11 +279,11 @@ router.post("/predict", auth, async (req, res) => {
       address: email,
       emails: [
         {
-          uid: uid || " ",
-          from: from || " ",
-          msg: msg || " ",
-          subject: subject || " ",
-          content_type: " "
+          uid: uid || ' ',
+          from: from || ' ',
+          msg: msg || ' ',
+          subject: subject || ' ',
+          content_type: ' '
         }
       ]
     };
@@ -299,80 +303,42 @@ router.post("/predict", auth, async (req, res) => {
       const src = await fs.createReadStream(`./stream/Predict.file`);
       // Posts search to DS
       const post = await axios({
-        method: "POST",
-        url:
-          "http://ec2-3-19-30-227.us-east-2.compute.amazonaws.com/predict",
+        method: 'POST',
+        url: 'http://ec2-3-19-30-227.us-east-2.compute.amazonaws.com/predict',
         data: src
       }).catch(err => {
-        res.status(500).json({ message: "Server unable to connect to DS" })
-      })
-      console.log(post,"POST POST POSt")
+        res.status(500).json({ message: 'Server unable to connect to DS' });
+      });
+      console.log(post, 'POST POST POSt');
       post
         ? Messages.getResults(DsUser, post.data.prediction)
             .then(results => {
               res.status(200).json(results);
             })
             .catch(err => {
-              res.status(500).json({ message: "Unable to get results" });
+              res.status(500).json({ message: 'Unable to get results' });
             })
-        : res.status(500).json({ message: "Unable to complete search" });
+        : res.status(500).json({ message: 'Unable to complete search' });
     });
   } catch (err) {
     console.log(err);
     res
       .status(500)
-      .json({ message: "Server was unable to submit search", err });
+      .json({ message: 'Server was unable to submit search', err });
   }
 });
 // ********* END THE ROUTES WITH STREAMING *********
 
-// ********* IMAP ROUTES ********
-
-router.post("/", auth, async (req, res) => {
-  try {
-    const { email, host, token } = req.body;
-    let userId;
-    let uid = 1;
-    let newUserEmail;
-
-    // Find the user in the database, grab the id
-    const user = await Users.findUser(email);
-    if (user) {
-      userId = user.id;
-    } else {
-      newUserEmail = { email };
-      const newUser = await Users.addUser(newUserEmail);
-      newUser ? (userId = newUser.id) : null;
-    }
-
-    // Check for the last email from the user, grab the uid
-    const lastEmail = await Messages.getLastEmailFromUser(userId);
-    lastEmail ? (uid = lastEmail.uid) : null;
-
-    // Get all the emails
-    const emails = await Mails.getMail(req.body, userId, uid).catch(err => console.log(err))
-    console.log(emails, "WHY IS THIS FAILING?")
-    emails
-      ? res
-          .send({ allEmailsFetched: { fetched: true, date: Date.now() } })
-      : res
-          .send({ fetched: false, msg: "Emails failed to fetch." });
-  } catch (err) {
-    console.log(err);
-    res
-      .send({ fetched: false, err, msg: "The entire request failed." });
-  }
-});
 
 // GETS ALL BOXES
-router.post("/boxes", auth, async (req, res) => {
+router.post('/boxes', auth, async (req, res) => {
   try {
     const { email, host, token } = req.body;
     let folders = [];
     var config = {
       imap: {
         user: email,
-        password: "",
+        password: '',
         host: host,
         port: 993,
         tls: true,
@@ -399,13 +365,13 @@ router.post("/boxes", auth, async (req, res) => {
         ? res.status(200).json(folders[0])
         : res.status(400).json({
             fetched: false,
-            msg: "Emails failed to fetch."
+            msg: 'Emails failed to fetch.'
           });
     }, 3000);
   } catch (err) {
     res
       .status(500)
-      .json({ fetched: false, err, msg: "The entire request failed." });
+      .json({ fetched: false, err, msg: 'The entire request failed.' });
   }
 });
 

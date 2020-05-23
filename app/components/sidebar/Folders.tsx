@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding} from '../../actions';
+import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding } from '../../actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInbox,
@@ -19,27 +19,31 @@ const Folders = props => {
   }
 
   useEffect(() => {
-    console.log('HERREEEEE',props.label,props.pageNum,props.isSearch)
-    props.getEmails(props.label,props.pageNum,props.isSearch)
+    console.log('HERREEEEE', props.label, props.pageNum, props.isSearch)
+    if(!props.isChecking){
+      props.getEmails(props.label, props.pageNum, props.isSearch)
+    }
     //eslint-disable-next-line
-  },[props.label])
+  }, [props.label, props.isChecking])
 
-    return (
-        <nav>
-        {/* this onClick sets the snippets to filter email by received */}
-        <li onClick={() => setFilter("inbox")}><FontAwesomeIcon icon={faInbox} />Inbox</li>
-        {/* this onClick sets the snippets to filter email by sent */}
-        <li onClick={() => setFilter('sent')}><FontAwesomeIcon icon={faEnvelope} />Sent</li>
-        {/* this onClick sets the snippets to filter email by drafts */}
-        <li onClick={() => setFilter('draft')}><FontAwesomeIcon icon={faFolderOpen} />Draft</li>
-      </nav>
-    )
+  return (
+    <nav>
+      {/* this onClick sets the snippets to filter email by received */}
+      <li onClick={() => setFilter("inbox")}><FontAwesomeIcon icon={faInbox} />Inbox</li>
+      {/* this onClick sets the snippets to filter email by sent */}
+      <li onClick={() => setFilter('sent')}><FontAwesomeIcon icon={faEnvelope} />Sent</li>
+      {/* this onClick sets the snippets to filter email by drafts */}
+      <li onClick={() => setFilter('draft')}><FontAwesomeIcon icon={faFolderOpen} />Draft</li>
+    </nav>
+  )
 }
 
-const mapStateToProps = ({ inbox }) => ({
-  label:inbox.label,
+const mapStateToProps = ({ inbox, operation }) => ({
+  label: inbox.label,
   pageNum: inbox.pageNum,
-  isSearch:inbox.isSearch
+  isSearch: inbox.isSearch,
+  isChecking: operation.isChecking,
+  failed: operation.failed
 })
 
-export default connect(mapStateToProps,{getEmails,closeEmail,setLabel,resetSearch, setAnalyticsBar, setSliding})(Folders);
+export default connect(mapStateToProps, { getEmails, closeEmail, setLabel, resetSearch, setAnalyticsBar, setSliding })(Folders);
