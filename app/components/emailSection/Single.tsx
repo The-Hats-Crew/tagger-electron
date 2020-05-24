@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeHtmlSafe } from "../../utils/MessageHelper";
 
 export const Single = props => {

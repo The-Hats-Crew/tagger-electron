@@ -4,7 +4,7 @@ import { sendEmail, changeIsComposing } from "../../actions/composerActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
-const Compose = props => {
+export const Compose = props => {
     // this is the state for the email object that gets sent off using nodemailer on the backend
      const [email, setEmail] = useState({
         from: "Tagger Labs<taggerlabs20@gmail.com>",
@@ -21,7 +21,7 @@ const Compose = props => {
             [e.target.name]: e.target.value
         });
     }
-// invokes the sendEmail function brought in from ComposerActions.js 
+// invokes the sendEmail function brought in from ComposerActions.js
     const handleSubmit = () => {
         console.log(email, "Email");
         props.sendEmail(email);
@@ -36,7 +36,7 @@ const Compose = props => {
         </div>
         <div className="compose-card col">
             <FontAwesomeIcon icon={faTimesCircle} className="close end" onClick={changeIsComposing}/>
-            <input type="email" placeholder="To" name="to" id="receiver" value={email.receiver} onChange={handleChange} />
+            <input type="email" placeholder="To" name="to" id="receiver" value={email.to} onChange={handleChange} />
             <input type="email" placeholder="CC" name="cc" id="cc" value={email.cc} onChange={handleChange} />
             <input type="email" placeholder="BCC" name="bcc" id="bcc" value={email.bcc} onChange={handleChange} />
             <input type="text" placeholder="Subject" name="subject" id="subject" value={email.subject} onChange={handleChange} />
@@ -44,7 +44,7 @@ const Compose = props => {
                 type="text"
                 name="text"
                 id="body"
-                value={email.body}
+                value={email.text}
                 onChange={handleChange}
             >
             </textarea>
