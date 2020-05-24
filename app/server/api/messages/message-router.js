@@ -162,12 +162,18 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.get('/', auth, async (req, res) => {
-  imapService.checkForNewMail()
-  .then(res => {
-    res.send({success: true});
+  const {lastMessageId} = req.query;
+  imapService.checkForNewMail(lastMessageId)
+  .then(data => {
+    res.send({
+      lastUid: data,
+      success: true
+    });
   })
   .catch(err => {
-    res.send({success: false})
+    res.send({
+      success: false
+    })
   });
 });
 

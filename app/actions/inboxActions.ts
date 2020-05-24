@@ -1,19 +1,18 @@
-import axios from "axios";
 import {IpcClient} from "ipc-express";
 import {ipcRenderer} from 'electron';
 const ipc = new IpcClient(ipcRenderer);
-const url = process.env.REACT_APP_BACKENDURL
-    ? process.env.REACT_APP_BACKENDURL
-    : "https://tagger-be-dev.herokuapp.com/";
 
 export const SET_LABEL = 'SET_LABEL';
+export const NEXT_PAGE = 'NEXT_PAGE';
+export const PREV_PAGE = 'PREV_PAGE';
+export const GET_EMAILS = 'GET_EMAILS';
+export const SET_LAST_UID = 'SET_LAST_UID';
 
 export const setLabel = label => dispatch => {
     console.log('SET LABEL', label)
     dispatch({type:SET_LABEL, payload:label})
 }
 
-export const GET_EMAILS = 'GET_EMAILS';
 export function getEmails(label,pageNum,search) {
     return function(dispatch){
         if(search){
@@ -28,7 +27,7 @@ export function getEmails(label,pageNum,search) {
                 })
         } else {
             return ipc
-                .get(url + `emails/label/${label}/${pageNum}`)
+                .get(`/emails/label/${label}/${pageNum}`)
                 .then(res => {
                     console.log('INBOX RESS', res.data)
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:false}})
@@ -40,8 +39,6 @@ export function getEmails(label,pageNum,search) {
         }
     }
 }
-
-export const NEXT_PAGE = 'NEXT_PAGE';
 
 export function nextPage(label,pageNum,search) {
     return function(dispatch){
@@ -69,8 +66,6 @@ export function nextPage(label,pageNum,search) {
     }
 }
 
-export const PREV_PAGE = 'PREV_PAGE';
-
 export function prevPage(label,pageNum,search) {
     return function(dispatch){
         if(!search){
@@ -97,6 +92,10 @@ export function prevPage(label,pageNum,search) {
         //             dispatch({type:PREV_PAGE, payload:err})
         //         })
     }
+}
+
+export const setLastUid = (lastUid) => (dispatch) => {
+  dispatch({type: SET_LAST_UID, payload: lastUid})
 }
 
 

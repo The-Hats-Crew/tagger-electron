@@ -26,21 +26,25 @@ export const setOperationReducer = (
       };
     case DISCARD:
       return {
+        ...state,
         isHidden: true,
         messageType: null
       };
     case CHECKING_NEW_MAIL_START:
       return {
+        ...state,
         isChecking: true,
         failed: false
       };
     case CHECKING_NEW_MAIL_SUCCESS:
       return {
+        ...state,
         isChecking: false,
         failed: false
       };
     case CHECKING_NEW_MAIL_FAILED:
       return {
+        ...state,
         isChecking: false,
         failed: true
       }
