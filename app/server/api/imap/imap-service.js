@@ -135,7 +135,6 @@ function checkForNewMail(lastMessageId) {
   console.log('Checking for new messages...');
   return new Promise((resolve, reject) => {
     resolve(getLatestMail('taggerlabs20@gmail.com', 'Lambdalabs20!', 'imap.gmail.com')); // TEMP TEMP TEMP
-    // resolve(getLatestMail('anthonyk2020@gmail.com', 'fqngmhpekklvhadh', 'imap.gmail.com', lastMessageId)); // TEMP TEMP TEMP
   })
 }
 
