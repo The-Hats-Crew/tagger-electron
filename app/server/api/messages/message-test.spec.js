@@ -1,4 +1,8 @@
 // Tests by Labs24: Cody Denniston and Matt Bergeron
+/**
+ * The initial tests will only test the functions of the message-router to see if the 
+ * router functions work as is, not the message-model helper functions. 
+ */
 
 const request = require('supertest')
 const auth = require('./message-router')
@@ -8,33 +12,66 @@ const {google} = require('googleapis');
 describe('message router middleware', () => {
 
     describe('GET @/email/:id', () => {
-        todo('should retrieve email with set id')
-        todo('should order email by descending order by the date')
-        todo('it should send an email object')
+        it.todo('should set the id to the requested paramater id')
+        it.todo('should send a JSON object')
+        it.todo('should send error if the id is not correct')
     })
 
     describe('GET @/email/thread/:id', () => {
-        todo('Should retrieve a thread of emails by the thread id')
-        todo('Should retrieve emails in descending order by date')
+        it.todo('should set the id to the requested paramater id')
+        it.todo('should send a JSON object')
+        it.todo('should send error if the id is not correct')
     })
 
     describe('GET @/email/thread-message/:id', () => {
-        todo('should return a database of emails')
-        todo('should return the database based on specific message id')
+        it.todo('should set the id to the requested paramater id')
+        it.todo('should send a JSON object')
+        it.todo('should send error if the id is not correct')
     })
 
     describe('GET @/label/:label/page', () => {
-        todo('should check to make sure the page number is not less than 0')
-        todo('should check to make sure the page is not equal to 0')
-
+        it.todo('should check to make sure the page number is not less than 0')
+        it.todo('should check to make sure the page is not equal to 0')
+        it.todo('should send a JSON object')
     })
 
-    describe('POST /analytics', () => {
-        todo('Should retrieve an email from the address that sent it')
-        todo('Should retrieve a name from the email object')
-        todo('The recievied count should increment by 1 for each email recieved')
+    describe('POST @/analytics', () => {
+        it.todo('should set the address to the requested body address')
+        it.todo('should send a JSON object')
+        it.todo('the JSON object should have name set to the address name')
     })
 
+    descsribe('POST @/search/dev/:page', () => {
+        it.todo('should check to make sure the page number is not less than 0')
+        it.todo('should check to make sure the page is not equal to 0')
+        it.todo('should send a JSON object')
+    })
 
+    descsribe('POST @/search/column/:page', () => {
+        it.todo('should check to make sure the page number is not less than 0')
+        it.todo('should check to make sure the page is not equal to 0')
+        it.todo('should send a JSON object')
+    })
+
+    // these will be for when we get the server up and running
+    // describe('GET @/', () => {
+    //     it.todo('')
+    // })
+
+    // describe('POST @/stream', () => {
+    //     it.todo('')
+    // })
+
+    // describe('POST @/train', () => {
+    //     it.todo('')
+    // })
+
+    // describe('POST @/predict', () => {
+    //     it.todo('')
+    // })
+
+    // describe('POST @/boxes', () => {
+    //     it.todo('')
+    // })
 
 })
