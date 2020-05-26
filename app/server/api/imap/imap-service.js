@@ -1,22 +1,33 @@
-const imapSimple = require("imap-simple");
-const simpleParser = require("mailparser").simpleParser;
-const messagesModel = require("../messages/message-model");
+const imapSimple = require('imap-simple');
+const simpleParser = require('mailparser').simpleParser;
+const messagesModel = require('../messages/message-model');
+const { ipcMain } = require('electron');
 
 async function getLastMessageByUserId(taggerUserId) {
   try {
     const lastMessageId = messagesModel.getLastMessageByUserId(taggerUserId);
 
     return lastMessageId;
-  }
-  catch (e) {
+  } catch (e) {
     return 0; // empty email account
   }
 }
 
-async function getLatestMail(imapUser, imapPassword, imapServer) {
+async function getLatestMail(imapUser, imapPassword, imapServer, lastMessageId) {
   const taggerUserId = 1; // TEMP SINGLE USER
-  const lastMessage = await getLastMessageByUserId(taggerUserId);
-  const lastMessageId = lastMessage ? lastMessage.uid : 1;
+  let lastMessage = await getLastMessageByUserId(taggerUserId);
+  let startUID = 1;
+
+  if(lastMessage && lastMessage !== 'null'){
+    console.log(lastMessage)
+    startUID = lastMessage.uid;
+  }
+
+  if(lastMessageId && lastMessageId !== 'null'){
+    console.log(lastMessageId)
+    startUID = Number(lastMessageId);
+  }
+  let endUID = startUID + 500;
 
   const imapConnection = await imapSimple.connect({
     imap: {
@@ -31,10 +42,16 @@ async function getLatestMail(imapUser, imapPassword, imapServer) {
     // onmail: handleOnMail => THE FUTURE
   });
 
-  await imapConnection.openBox("[Gmail]/All Mail");
+  const box = await imapConnection.openBox('[Gmail]/All Mail');
+  console.log(box);
+  if(endUID > box.nextuid){
+    endUID = box.nextuid;
+  }
+  console.log(endUID);
 
-  const searchCriteria = ["ALL", ["UID", lastMessageId + ":*"]];
-  const fetchOptions = { bodies: "" }; // see https://github.com/mscdex/node-imap
+  // const searchCriteria = ['ALL', ['UID', lastMessageId + ':' + (Number(lastMessageId) + 1000)]];
+  const searchCriteria = ['ALL', ['UID', startUID + ":" + endUID]];
+  const fetchOptions = { bodies: '' }; // see https://github.com/mscdex/node-imap
 
   const searchResults = await imapConnection.search(
     searchCriteria,
@@ -43,18 +60,27 @@ async function getLatestMail(imapUser, imapPassword, imapServer) {
 
   imapConnection.end();
 
-  if (lastMessageId != 0) { // the searchResults will always contain the last email, so we remove it
+  if (lastMessageId != 0) {
+    // the searchResults will always contain the last email, so we remove it
     searchResults.shift();
   }
 
   console.log(`IMAP returned ${searchResults.length} new messages`);
 
-  const parsedMessages = await parseImapSearchResults(searchResults);
-  const dboMessages = parsedMessagesToDBO(parsedMessages);
+  try {
+    const parsedMessages = await parseImapSearchResults(searchResults);
+    const dboMessages = parsedMessagesToDBO(parsedMessages);
+    addMessagesToDb(dboMessages);
+  } catch (error) {
+    console.log(error);
+  }
 
-  addMessagesToDb(dboMessages);
-
-  return dboMessages;
+  lastMessage = searchResults.length ? await getLastMessageByUserId(taggerUserId) : {uid: null};
+  lastMessageId = lastMessage.uid;
+  if(lastMessageId === box.nextuid - 1){
+    return null;
+  }
+  return lastMessageId && lastMessageId < box.nextuid - 1 ? lastMessageId : endUID;
 }
 
 async function parseImapSearchResults(searchResults) {
@@ -74,17 +100,17 @@ function parsedMessagesToDBO(parsedMessages) {
   const dboMessages = parsedMessages.map(msg => {
     return {
       uid: msg.attributes.uid,
-      from: msg.from.value.map(f => f.address).join(","),
-      name: msg.from.value.map(f => f.name).join(","),
-      to: msg.to.value.map(t => t.address).join(","),
+      from: msg.from.value.map(f => f.address).join(','),
+      name: msg.from.value.map(f => f.name).join(','),
+      to: msg.to.value.map(t => t.address).join(','),
       subject: msg.subject,
       email_body: msg.html,
       email_body_text: msg.text,
       message_id: msg.messageId,
       date: msg.date,
-      labels: msg.attributes["x-gm-labels"].toString(),
-      gMsgId: msg.attributes["x-gm-msgid"],
-      gmThreadID: msg.attributes["x-gm-thrid"],
+      labels: msg.attributes['x-gm-labels'].toString(),
+      gMsgId: msg.attributes['x-gm-msgid'],
+      gmThreadID: msg.attributes['x-gm-thrid'],
       user_id: 1 // TODO
     };
   });
@@ -94,21 +120,23 @@ function parsedMessagesToDBO(parsedMessages) {
 
 function addMessagesToDb(dboMessages) {
   dboMessages.forEach(dboMessage => {
-    messagesModel.addEmail(dboMessage)
+    messagesModel
+      .addEmail(dboMessage)
       .then(res => {
-        console.log(`${dboMessage.uid} was added`)
+        console.log(`${dboMessage.uid} was added`);
       })
       .catch(err => {
-        console.log(`${dboMessage.uid} was NOT added: ${err.code}`)
+        console.log(`${dboMessage.uid} was NOT added: ${err.code}`);
       });
   });
 }
 
-function checkForNewMail() {
-  console.log("Checking for new messages...");
-    return new Promise((resolve, reject) => {
-      resolve(getLatestMail("taggerlabs20@gmail.com", "Lambdalabs20!", "imap.gmail.com")); // TEMP TEMP TEMP
-    })
+function checkForNewMail(lastMessageId) {
+  console.log('Checking for new messages...');
+  return new Promise((resolve, reject) => {
+    resolve(getLatestMail('taggerlabs20@gmail.com', 'Lambdalabs20!', 'imap.gmail.com')); // TEMP TEMP TEMP
+    // resolve(getLatestMail('anthonyk2020@gmail.com', 'fqngmhpekklvhadh', 'imap.gmail.com', lastMessageId)); // TEMP TEMP TEMP
+  })
 }
 
 module.exports = {

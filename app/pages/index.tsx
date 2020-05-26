@@ -7,21 +7,23 @@ import EmailList from "../components/emailList/EmailList";
 import EmailSection from "../components/emailSection/EmailSection";
 import Compose from "../components/compose/Compose";
 import AnalyticsBar from "../components/analytics/Analytics";
-import { ipcRenderer } from 'electron';
-import { IpcClient } from 'ipc-express';
+import { checkNewMail, setLastUid } from "../actions";
 import "../styles/index.global.scss";
 
 const Index = (props) => {
   const [composer, setComposer] = useState(false);
-  const ipc = new IpcClient(ipcRenderer);
 
   useEffect(() => {
-    async function getEmails() {
-      const { data } = await ipc.get("/emails/label/inbox/1");
-      console.log(data);
-    }
-    getEmails();
+    const numMinutes = 10;
+    const emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+    return () => clearInterval(emailInterval)
   }, [])
+
+  function setupBackgroundTimers(numMinutes) {
+    props.checkNewMail()
+    // update after 1 second, then every 10 minutes
+    console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
+  }
 
   return (
     <>
@@ -49,4 +51,4 @@ const mapStateToProps = ({ analyticsbar, viewEmail }) => ({
   isViewEmail: viewEmail.displayEmailSection
 })
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps, { checkNewMail, setLastUid })(Index);

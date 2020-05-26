@@ -168,9 +168,7 @@ function addEmail(email) {
   return db("emails")
     .insert(email, "id")
     .then(ids => {
-      const [id] = ids;
-
-      return findEmailbyId(id);
+      return findEmailbyId(ids);
     });
 }
 

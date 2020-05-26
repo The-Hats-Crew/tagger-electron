@@ -8,6 +8,7 @@ import EmailSection from './components/emailSection/EmailSection';
 import AnalyticsBar from './components/analytics/Analytics';
 import Compose from './components/compose/Compose';
 import {emit} from 'eiphop'
+import { ipcRenderer } from "electron";
 import './App.scss';
 
 const App = props => {
@@ -15,8 +16,7 @@ const App = props => {
   const [ composer, setComposer ] = useState(false)
 
   useEffect(() => {
-    emit('ping')
-    .then(res => console.log(res));
+
   }, [])
 
   return (

@@ -26,7 +26,7 @@ describe('message router middleware', () => {
     describe('GET @/label/:label/page', () => {
         todo('should check to make sure the page number is not less than 0')
         todo('should check to make sure the page is not equal to 0')
-        
+
     })
 
     describe('POST /analytics', () => {
@@ -35,6 +35,6 @@ describe('message router middleware', () => {
         todo('The recievied count should increment by 1 for each email recieved')
     })
 
-    
+
 
 })
