@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setSimilarEmail } from '../../actions';
 
-const SimilarButton = props => {
+export const SimilarButton = props => {
 
     const handleSimilar = (id) => {
         //console.log(props.viewemail)

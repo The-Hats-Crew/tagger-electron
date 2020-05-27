@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setEmailOperation } from '../../actions'
 
-const EmailButtons = props => {
+export const EmailButtons = props => {
 
     return (
         <>
@@ -13,4 +13,4 @@ const EmailButtons = props => {
     )
 }
 
-export default connect(null,{setEmailOperation})(EmailButtons); 
+export default connect(null,{setEmailOperation})(EmailButtons);
