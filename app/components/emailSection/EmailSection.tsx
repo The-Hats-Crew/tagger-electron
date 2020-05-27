@@ -12,7 +12,7 @@ import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
 import { makeHtmlSafe } from "../../utils/MessageHelper";
 
-const EmailSection = props => {
+export const EmailSection = props => {
 
 
     const handleAnalyticsBar = (email) => {
