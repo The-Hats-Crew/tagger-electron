@@ -5,30 +5,30 @@ import SimilarButton from './SimilarButton';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faReply, faReplyAll, faTrashAlt, faShare} from "@fortawesome/free-solid-svg-icons";
 
-const EmailOperations = props => {
- 
+export const EmailOperations = props => {
+
   return (
       <>
       <SimilarButton />
-      <FontAwesomeIcon 
+      <FontAwesomeIcon
           icon={faReply}
           onClick={() => {
             props.setEmailOperation('reply')
-          }} 
+          }}
       />
-      <FontAwesomeIcon 
+      <FontAwesomeIcon
           icon={faReplyAll}
           onClick={() => {
             props.setEmailOperation('replyall')
           }}
       />
-      <FontAwesomeIcon 
+      <FontAwesomeIcon
           icon={faShare}
           onClick={() => {
             props.setEmailOperation('forward')
           }}
-      />  
-      <FontAwesomeIcon 
+      />
+      <FontAwesomeIcon
           icon={faTrashAlt}
           onClick={() => {
             //setReplyIsHidden(false);
