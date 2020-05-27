@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { discard } from '../../actions';
 
-const Operation = props => {
+export const Operation = props => {
 
     return (
         <>
