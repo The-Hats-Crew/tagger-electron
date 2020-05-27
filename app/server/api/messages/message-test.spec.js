@@ -41,13 +41,13 @@ describe('message router middleware', () => {
         it.todo('the JSON object should have name set to the address name')
     })
 
-    descsribe('POST @/search/dev/:page', () => {
+    describe('POST @/search/dev/:page', () => {
         it.todo('should check to make sure the page number is not less than 0')
         it.todo('should check to make sure the page is not equal to 0')
         it.todo('should send a JSON object')
     })
 
-    descsribe('POST @/search/column/:page', () => {
+    describe('POST @/search/column/:page', () => {
         it.todo('should check to make sure the page number is not less than 0')
         it.todo('should check to make sure the page is not equal to 0')
         it.todo('should send a JSON object')
