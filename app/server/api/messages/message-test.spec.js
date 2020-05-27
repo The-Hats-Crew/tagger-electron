@@ -4,9 +4,15 @@
  * router functions work as is, not the message-model helper functions.
  */
 
+//requirements from the previous labs prior to Labs24
 const request = require('supertest');
-const auth = require('./message-router');
+const message = require('./message-router');
 const { google } = require('googleapis');
+
+//added in the server.js and databse routes -Matt B
+const server = require('../server');
+const db = require('../../data/dbConfig')
+const {auth} = require('../auth/auth-middleware')
 
 describe('message router middleware', () => {
 
@@ -40,6 +46,8 @@ describe('message router middleware', () => {
     email_id: 1
   }
 
+  let token;
+
   beforeEach(async () => {
     await db('emails')
       .truncate()
@@ -48,12 +56,15 @@ describe('message router middleware', () => {
       .then(() => db('tags').truncate());
       return db('users')
         .insert(example_user)
-        .then(() => db())
+        .then(() => db('emails').insert(example_email))
+        .then(() => db('tags').insert(example_tag));
   })
 
   describe('GET @/email/:id', () => {
-    it.todo('should set the id to the requested paramater id', () => {
-      
+    it('should set the id to the requested parameter id', async () => {
+      const res = await request(message)
+        .get('./email/:id')
+      expect(id).toMatch(req.params.id);
     });
     it.todo('should send a JSON object');
     it.todo('should send error if the id is not correct');
