@@ -9,8 +9,6 @@ Enzyme.configure({ adapter: new Adapter() });
 
 function setup() {
   const actions = {
-    sendEmail: spy(),
-    setComposer: spy()
   };
   const component = shallow(<EmailList {...actions} />);
   return {
@@ -25,5 +23,32 @@ describe("EmailList component", () => {
       const {component} = setup();
       expect(component).not.toBeNull()
     })
-    
+
+    it("should render without crashing when emails is empty array", () => {
+      const {component} = setup();
+      component.setProps({
+        emails: []
+      })
+      expect(component).not.toBeNull()
+    })
+
+    it("should render without crashing emails array is passed as a prop", () => {
+      const {component} = setup();
+      component.setProps({
+        emails:[
+          {
+            id: 1,
+            name: "Anthony",
+            date: "March 23rd 2015"
+          },
+          {
+            id: 2,
+            name: "Anthony",
+            date: "March 23rd 2015"
+          }
+        ]
+      })
+      expect(component.find("div.btn").hasClass("compose-circle-btn")).toBe(true);
+    })
+
 })

@@ -7,7 +7,7 @@ import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
 import ShowDate from '../../utils/ShowDate';
 
-const Card = props => {
+export const Card = props => {
 
     const setViewEmail = email => {
         props.setAnalyticsBarContact(email.from)
@@ -24,7 +24,7 @@ const Card = props => {
             <div className="snippet-meta row">
                 {/* This ternary checks whether to display who its from or who it was sent to depending on what snippetsFilter is set to */}
                 <h3>
-                    {/* {showContact()} */} {props.email.name}
+                    {/* {showContact()} */}{props.email.name}
                 </h3>
                 <time>
                     {ShowDate(props.email.date)}
