@@ -1,7 +1,7 @@
 // Tests by Labs24: Cody Denniston and Matt Bergeron
 /**
- * The initial tests will only test the functions of the message-router to see if the 
- * router functions work as is, not the message-model helper functions. 
+ * The initial tests will only test the functions of the message-router to see if the
+ * router functions work as is, not the message-model helper functions.
  */
 
 const request = require('supertest')
