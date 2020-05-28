@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {setSliding} from '../../actions';
 
-const ComposeButton = props => {
+export const ComposeButton = props => {
 
     const toggleIsComposing = () => {
         props.setComposer(true);
