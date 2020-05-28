@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import Card from './Card';
 
-const List = props => {
+export const EmailList = props => {
 
 
     const toggleIsComposing = () => {
@@ -56,4 +56,4 @@ const mapStateToProps = ({ inbox, search }) => ({
     isSearch:inbox.isSearch
 })
 
-export default connect(mapStateToProps)(List);
+export default connect(mapStateToProps)(EmailList);
