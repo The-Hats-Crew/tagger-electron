@@ -4,7 +4,7 @@ import { nextPage, prevPage, closeEmail } from '../../actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
-const Pagination = props => {
+export const Pagination = props => {
 
   const currentPage = props.pageNum;
   const lower = ((props.pageNum - 1) * 25) + 1;
@@ -38,12 +38,14 @@ const Pagination = props => {
       <span>{lower}-{higher} of {props.totalCount}</span>
       <FontAwesomeIcon
         icon={faAngleLeft}
-        id={currentPage === 1 && 'inactive'}
+        className={currentPage === 1 ? 'inactive' : ""}
+        id = "prev-btn"
         onClick={() => handlePrev()}
       />
       <FontAwesomeIcon
         icon={faAngleRight}
-        id={currentPage === pageCount ? 'inactive' : null}
+       className={currentPage === pageCount ? 'inactive' : ""}
+       id = "next-btn"
         onClick={() => handleNext()}
       />
     </div>

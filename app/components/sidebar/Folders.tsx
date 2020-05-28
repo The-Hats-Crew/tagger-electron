@@ -8,7 +8,7 @@ import {
   faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 
-const Folders = props => {
+export const Folders = props => {
 
   const setFilter = (folder) => {
     props.resetSearch()

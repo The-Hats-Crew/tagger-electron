@@ -11,7 +11,6 @@ Enzyme.configure({ adapter: new Adapter() });
 
 function setup() {
   const actions = {
-   
   };
   const component = shallow(<Operation {...actions} />);
   return {

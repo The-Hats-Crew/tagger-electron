@@ -32,4 +32,4 @@ const mapStateToProps = ({ operation }) => ({
     isHidden:operation.isHidden
 })
 
-export default connect(mapStateToProps,{discard})(Operation);  
+export default connect(mapStateToProps,{discard})(Operation);
