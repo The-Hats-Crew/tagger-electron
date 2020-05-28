@@ -6,13 +6,16 @@
 
 //requirements from the previous labs prior to Labs24
 const request = require('supertest');
+const express = require("express");
+const server = express();
 const message = require('./message-router');
 const { google } = require('googleapis');
 
 //added in the server.js and databse routes -Matt B
-const server = require('../server');
 const db = require('../../data/dbConfig')
 const {auth} = require('../auth/auth-middleware')
+
+server.use("/", message);
 
 describe('message router middleware', () => {
 
@@ -52,7 +55,6 @@ describe('message router middleware', () => {
     await db('emails')
       .truncate()
       .then(() => db('users').truncate())
-      .then(() => db('emails').truncate())
       .then(() => db('tags').truncate());
       return db('users')
         .insert(example_user)
@@ -62,9 +64,11 @@ describe('message router middleware', () => {
 
   describe('GET @/email/:id', () => {
     it('should set the id to the requested parameter id', async () => {
-      const res = await request(message)
-        .get('./email/:id')
-      expect(id).toMatch(req.params.id);
+      const res = await request(server)
+        .get('/email/1').then(res => {
+          expect(res.body[0]).toStrictEqual(example_email)
+        })
+      // expect(id).toMatch(req.params.id);
     });
     it.todo('should send a JSON object');
     it.todo('should send error if the id is not correct');

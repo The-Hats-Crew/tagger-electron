@@ -30,7 +30,9 @@ router.get('/email/:id', (req, res) => {
     .then(emails => {
       res.send(emails);
     })
-    .catch(error => res.send(error));
+    .catch(error => {
+      res.send(error)
+    });
 });
 
 router.get('/email/thread/:id', (req, res) => {

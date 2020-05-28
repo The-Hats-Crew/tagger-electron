@@ -55,9 +55,9 @@ module.exports = {
     }
   },
 
-  testing: {
+  test: {
     client: 'sqlite3',
-    connection: { filename: './data/testemails.db3' },
+    connection: { filename: path.resolve(__dirname, 'data/testemails.db3') },
     useNullAsDefault: true,
     migrations: {
       directory: './data/migrations'
@@ -71,7 +71,6 @@ module.exports = {
       idleTimeoutMillis: 30000,
       reapIntervalMillis: 1000,
       createRetryIntervalMillis: 100,
-      propagateCreateError: false,
       afterCreate: (conn, done) => {
         conn.run('PRAGMA foreign_keys = ON', done);
       }
