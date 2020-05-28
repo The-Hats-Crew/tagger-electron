@@ -27,6 +27,11 @@ describe('EmailOperations component', () => {
     expect(component.find('[icon]')).toHaveLength(4);
   })
 
+  it('should display 4 icons', () => {
+    const {component} = setup();
+    expect(component.render()).toHaveLength(4);
+  })
+
   it('should display 4 elements as FontAwesomeIcon tags', () => {
     const {component} = setup();
     const icons = component.find('[icon]').forEach((node) => {
