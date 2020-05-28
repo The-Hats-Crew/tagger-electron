@@ -4,6 +4,7 @@ import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer';
 import { EmailOperations } from './EmailOperations';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -25,11 +26,6 @@ describe('EmailOperations component', () => {
   it('should display 4 icons', () => {
     const {component} = setup();
     expect(component.find('[icon]')).toHaveLength(4);
-  })
-
-  it('should display 4 icons', () => {
-    const {component} = setup();
-    expect(component.render()).toHaveLength(4);
   })
 
   it('should display 4 elements as FontAwesomeIcon tags', () => {
