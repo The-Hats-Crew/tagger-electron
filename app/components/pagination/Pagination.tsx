@@ -4,7 +4,7 @@ import { nextPage, prevPage, closeEmail } from '../../actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
-const Pagination = props => {
+export const Pagination = props => {
 
   const currentPage = props.pageNum;
   const lower = ((props.pageNum - 1) * 25) + 1;
