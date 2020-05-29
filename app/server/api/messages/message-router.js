@@ -104,6 +104,29 @@ router.post('/analytics', (req, res) => {
 
 // ********** New Search Routes **********
 
+router.post('/search', (req, res) => {
+  const page = req.params.page;
+  const keyword = req.body.keyword;
+  let query = {};
+
+  if (page < 0 || page === 0) {
+    response = {
+      error: true,
+      message: 'invalid page number, should start with 1'
+    };
+    return res.send(response);
+  }
+
+  Messages.searchAll(query, keyword)
+    .then(result => {
+      res.send({
+        messages: result});
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
 router.post('/search/dev/:page', (req, res) => {
   const page = req.params.page;
   const keyword = req.body.keyword;

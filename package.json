@@ -52,7 +52,7 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "Tagger",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/",

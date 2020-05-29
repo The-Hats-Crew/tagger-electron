@@ -10,7 +10,7 @@ export const SEARCH_KEYWORD = "SEARCH_KEYWORD";
 export function searchKeyword(keyword){
     return function(dispatch){
         return ipc
-        .post(`/emails/search/name/1`, {keyword:keyword})
+        .post(`/emails/search`, {keyword:keyword})
         .then(res => {
             console.log('SEARCH ACTION',res.data)
             dispatch({type:SEARCH_KEYWORD, payload:{emails:res.data, keyword:keyword}});
