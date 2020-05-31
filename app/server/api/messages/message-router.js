@@ -1,18 +1,20 @@
 // ********** DEPENDENCIES **********
-const router = require('express').Router();
-const axios = require('axios');
-const rateLimit = require('axios-rate-limit');
-const fs = require('fs');
-const imaps = require('imap-simple');
+import express from 'express';
+const router = express.Router();
+import axios from 'axios';
+import rateLimit from 'axios-rate-limit';
+import fs from 'fs';
+import path from "path";
+import imaps from 'imap-simple';
 
 // ********** MODELS **********
-const Users = require('../users/user-model');
-const Messages = require('./message-model');
-const Tags = require('../tags/tag-model');
-const Mails = require('../imap/imap-model');
-const imapService = require('../imap/imap-service');
-const { auth } = require('../auth/auth-middleware');
-const { imapNestedFolders } = require('./message-middleware');
+import * as Users from '../users/user-model';
+import * as Messages from './message-model';
+import * as Tags from '../tags/tag-model';
+import * as Mails from '../imap/imap-model';
+import * as imapService from '../imap/imap-service';
+import { auth } from '../auth/auth-middleware';
+import { imapNestedFolders } from './message-middleware';
 
 // ********** GLOBAL VARIABLES **********
 
@@ -73,6 +75,7 @@ router.get('/label/:label/:page', (req, res) => {
     .then(emails => {
       Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
         .then(count => {
+          console.log(emails);
           res.send({
             totalCount: count,
             messages: emails
@@ -187,15 +190,18 @@ router.post('/search/:column/:page', (req, res) => {
 router.get('/', auth, async (req, res) => {
   const {lastMessageId} = req.query;
   imapService.checkForNewMail(lastMessageId)
-  .then(data => {
+  .then(lastUid => {
     res.send({
-      lastUid: data,
+      lastUid,
       success: true
     });
   })
   .catch(err => {
     res.send({
-      success: false
+      success: false,
+      error: err,
+      dbPath: path.join(process.resourcesPath, "app/server/data/prodemails.db3"),
+      lastMessageId
     })
   });
 });
@@ -404,4 +410,4 @@ router.post('/boxes', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,36 +1,10 @@
-const db = require("../../data/dbConfig.js");
-module.exports = {
-  getEmailList,
-  getEmail,
-  getThreadList,
-  getThreadID,
-  getResults,
-  getLastEmailFromUser,
-  getEmailIds,
-  searchByAny,
-  searchByCount,
-  searchAll,
-  getSent,
-  getReceived,
-  getNameFromAddress,
-  addEmail,
-  deleteAllEmailsByUser,
-  updateEmail,
-  deleteEmail,
-  getTagsForMessage,
-  getMessageTagsFromUser,
-  get,
-  findEmailbyId,
-  emails,
-  getLastMessageByUserId,
-  getEmailCountByLabelForUser
-};
+import db from "../../data/dbConfig";
 
-function getLastMessageByUserId(userId) {
+export function getLastMessageByUserId(userId) {
   return db("emails").orderBy("uid", "desc").first();
 }
 
-function getEmailList(query, label) {
+export function getEmailList(query, label) {
   return db("emails")
       .limit(query.limit)
       .offset(query.skip)
@@ -41,37 +15,37 @@ function getEmailList(query, label) {
 
 }
 
-function getEmailCountByLabelForUser(label, userId) {
+export function getEmailCountByLabelForUser(label, userId) {
   return db("emails")
     .where("user_id", userId)
     .where('labels', 'like', `%${label}%`)
     .count("id", {as: "count"}).first();
 }
 
-function getEmail(id) {
+export function getEmail(id) {
   return db('emails')
       .orderBy('date', "desc")
       .where('id', id)
 }
 
-function getThreadList(threadID) {
+export function getThreadList(threadID) {
   return db('emails')
       .orderBy('date', "desc")
       .where('gmThreadID', threadID)
 }
 
-function getThreadID(id) {
+export function getThreadID(id) {
   return db('emails')
       .where('message_id', id)
       .select('gmThreadID')
 }
 
-function getThreadByMessage(message_id) {
+export function getThreadByMessage(message_id) {
   return db('emails')
       .where
 }
 
-function searchByAny(query, column, keyword) {
+export function searchByAny(query, column, keyword) {
   return db('emails')
       .limit(query.limit)
       .offset(query.skip)
@@ -81,7 +55,7 @@ function searchByAny(query, column, keyword) {
       .orderBy('date', "desc")
 }
 
-function searchAll(query, keyword) {
+export function searchAll(query, keyword) {
   return db('emails')
       .limit(query.limit)
       .offset(query.skip)
@@ -95,26 +69,26 @@ function searchAll(query, keyword) {
       .orderBy('date', "desc")
 }
 
-function searchByCount(column, keyword) {
+export function searchByCount(column, keyword) {
   return db("emails")
     .where(column, "like", `%${keyword}%`)
     .count("id", {as: 'count'})
     .first();
 }
 
-function getReceived(address) {
+export function getReceived(address) {
   return db('emails')
       .where('from', address)
       .count('id', {as: 'count'})
 }
 
-function getSent(address) {
+export function getSent(address) {
   return db('emails')
       .where('to', address)
       .count('id', {as: 'count'})
 }
 
-function getNameFromAddress(address) {
+export function getNameFromAddress(address) {
   return db('emails')
       .where('from', address)
       .select('name')
@@ -122,7 +96,7 @@ function getNameFromAddress(address) {
 
 
 /////// Old Endpoints ////////
-function getResults(userId, results) {
+export function getResults(userId, results) {
   // const numArray = results.map(num => {
   //   return num * 1;
   // });
@@ -132,39 +106,39 @@ function getResults(userId, results) {
     .andWhere("user_id", userId);
 }
 
-function emails(id) {
+export function emails(id) {
   return db("emails")
     .orderBy("date", "desc")
     .where("user_id", id);
 }
 
-function updateEmail(userId, uid, changes) {
+export function updateEmail(userId, uid, changes) {
   return db("emails")
     .where("user_id", userId)
     .andWhere("uid", uid)
     .update(changes);
 }
 
-function deleteEmail(uid) {
+export function deleteEmail(uid) {
   return db("emails")
     .where("uid", uid)
     .del();
 }
 
-function getLastEmailFromUser(userid) {
+export function getLastEmailFromUser(userid) {
   return db("emails")
     .orderBy("uid", "desc")
     .where("user_id", userid)
     .first();
 }
 
-function findEmailbyId(id) {
+export function findEmailbyId(id) {
   return db("emails")
     .where({ id })
     .first();
 }
 
-function addEmail(email) {
+export function addEmail(email) {
   return db("emails")
     .insert(email, "id")
     .then(ids => {
@@ -172,25 +146,25 @@ function addEmail(email) {
     });
 }
 
-function getEmailIds(userId) {
+export function getEmailIds(userId) {
   return db("emails")
     .select("uid")
     .where("user_id", userId);
 }
 
-function deleteAllEmailsByUser(userId) {
+export function deleteAllEmailsByUser(userId) {
   return db("emails")
     .where("user_id", userId)
     .del();
 }
 
-function getTagsForMessage(messageId) {
+export function getTagsForMessage(messageId) {
   return db("tags")
     .select("tag")
     .where("email_id", messageId);
 }
 
-function getMessageTagsFromUser(userId) {
+export function getMessageTagsFromUser(userId) {
   const messages = db("messages").where({ userid });
 
   const newMessageArray = messages.map(message => {
@@ -199,7 +173,7 @@ function getMessageTagsFromUser(userId) {
   return newMessageArray;
 }
 
-function get(messageId) {
+export function get(messageId) {
   const messages = db("messages");
 
   if (messageId) {

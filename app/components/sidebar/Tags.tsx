@@ -1,13 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTags } from "@fortawesome/free-solid-svg-icons";
+import { FaTags } from "react-icons/fa";
 
 const Tags = () => {
 
     return (
         <>
             <div className="tags">
-                <li><FontAwesomeIcon icon={faTags} />Tags</li>
+                <li><FaTags />Tags</li>
             </div>
             <ul>
             {/* {props.boxes.map((box, i) => {

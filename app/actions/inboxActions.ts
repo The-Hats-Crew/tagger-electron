@@ -23,9 +23,11 @@ export function getEmails(label,pageNum,search) {
                     dispatch({type:GET_EMAILS, payload: {emails:res.data, isSearch:true, label:label}})
                 })
                 .catch(err => {
+                    console.log(err);
                     dispatch({type:GET_EMAILS, payload:err})
                 })
         } else {
+          console.log(`Sending ${label} ${pageNum}`)
             return ipc
                 .get(`/emails/label/${label}/${pageNum}`)
                 .then(res => {

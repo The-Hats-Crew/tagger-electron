@@ -1,5 +1,6 @@
-const smtpRouter = require("express").Router();
-const nodeMailer = require("nodemailer");
+import express from 'express';
+const smtpRouter = express.Router();
+import nodeMailer from "nodemailer";
 
 smtpRouter.post("/send", (req, res) => {
   const { from, to, subject, text, cc, bcc } = req.body;
@@ -52,4 +53,4 @@ smtpRouter.post("/send", (req, res) => {
   });
 });
 
-module.exports = smtpRouter;
+export default smtpRouter;

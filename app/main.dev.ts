@@ -15,7 +15,6 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import server from "./server/api/server";
 import {IpcServer} from "ipc-express";
-import imapService from "./server/api/imap/imap-service";
 
 const ipc = new IpcServer(ipcMain)
 
@@ -59,7 +58,6 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
@@ -73,7 +71,7 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'dist/renderer.prod.js')
     }
   });
-
+  ipc.listen(server);
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -88,8 +86,6 @@ const createWindow = async () => {
       mainWindow.show();
       mainWindow.focus();
     }
-
-    ipc.listen(server);
   });
 
   mainWindow.on('closed', () => {
@@ -123,5 +119,4 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
-
 

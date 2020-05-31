@@ -1,5 +1,4 @@
 const path = require('path');
-
 module.exports = {
   development: {
     client: 'sqlite3',
@@ -32,7 +31,7 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: path.resolve(__dirname, '../dist/data/prodemails.db3')
+      filename: process.resourcesPath ? path.join(process.resourcesPath, "resources/prodemails.db3") : path.resolve(__dirname, "../../resources/prodemails.db3")
     },
     migrations: {
       directory: './data/migrations'

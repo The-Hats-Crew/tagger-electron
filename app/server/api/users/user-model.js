@@ -1,14 +1,6 @@
-const db = require("../../data/dbConfig.js");
+import db from "../../data/dbConfig";
 
-module.exports = {
-  addUser,
-  findUser,
-  findUserById,
-  updateUser,
-  deleteUser
-};
-
-function addUser(user) {
+export function addUser(user) {
   return db("users")
     .insert(user, "id")
     .then(ids => {
@@ -17,21 +9,21 @@ function addUser(user) {
     });
 }
 
-function findUser(user) {
+export function findUser(user) {
   return db("users")
     .select("id")
     .where("email", "=", user)
     .first();
 }
 
-function findUserById(id) {
+export function findUserById(id) {
   return db("users")
     .select("*")
     .where({ id })
     .first();
 }
 
-function updateUser(id, changes) {
+export function updateUser(id, changes) {
   return db("users")
     .where({ id })
     .update(changes, "*")
@@ -40,7 +32,7 @@ function updateUser(id, changes) {
     });
 }
 
-function deleteUser(id) {
+export function deleteUser(id) {
   return db("users")
     .where({ id })
     .del();
