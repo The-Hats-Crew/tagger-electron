@@ -32,7 +32,9 @@ router.get('/email/:id', (req, res) => {
     .then(emails => {
       res.send(emails);
     })
-    .catch(error => res.send(error));
+    .catch(error => {
+      res.send(error)
+    });
 });
 
 router.get('/email/thread/:id', (req, res) => {
@@ -188,22 +190,20 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.get('/', auth, async (req, res) => {
-  const {lastMessageId} = req.query;
-  imapService.checkForNewMail(lastMessageId)
-  .then(lastUid => {
-    res.send({
-      lastUid,
-      success: true
-    });
-  })
-  .catch(err => {
-    res.send({
-      success: false,
-      error: err,
-      dbPath: path.join(process.resourcesPath, "app/server/data/prodemails.db3"),
-      lastMessageId
+  const { lastMessageId } = req.query;
+  imapService
+    .checkForNewMail(lastMessageId)
+    .then(data => {
+      res.send({
+        lastUid: data,
+        success: true
+      });
     })
-  });
+    .catch(err => {
+      res.send({
+        success: false
+      });
+    });
 });
 
 // ********** THE ROUTES WITH STREAMING **********
@@ -363,7 +363,6 @@ router.post('/predict', auth, async (req, res) => {
   }
 });
 // ********* END THE ROUTES WITH STREAMING *********
-
 
 // GETS ALL BOXES
 router.post('/boxes', auth, async (req, res) => {
