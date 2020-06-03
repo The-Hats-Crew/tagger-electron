@@ -190,22 +190,6 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.get('/', auth, async (req, res) => {
-<<<<<<< HEAD
-  const {lastMessageId} = req.query;
-  imapService.checkForNewMail(lastMessageId)
-  .then(lastUid => {
-    res.send({
-      lastUid,
-      success: true
-    });
-  })
-  .catch(err => {
-    res.send({
-      success: false,
-      error: err,
-      dbPath: path.join(process.resourcesPath, "app/server/data/prodemails.db3"),
-      lastMessageId
-=======
   const { lastMessageId } = req.query;
   imapService
     .checkForNewMail(lastMessageId)
@@ -214,7 +198,6 @@ router.get('/', auth, async (req, res) => {
         lastUid: data,
         success: true
       });
->>>>>>> 69901ec845b5e656428d88fe7098ab5640360c4d
     })
     .catch(err => {
       res.send({
