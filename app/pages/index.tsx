@@ -13,18 +13,6 @@ import "../styles/index.global.scss";
 const Index = (props) => {
   const [composer, setComposer] = useState(false);
 
-  useEffect(() => {
-    const numMinutes = 10;
-    const emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
-    return () => clearInterval(emailInterval)
-  }, [])
-
-  function setupBackgroundTimers(numMinutes) {
-    props.checkNewMail()
-    // update after 1 second, then every 10 minutes
-    console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
-  }
-
   return (
     <>
       <TopBar />

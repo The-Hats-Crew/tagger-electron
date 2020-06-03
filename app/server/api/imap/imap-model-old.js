@@ -5,12 +5,8 @@ const simpleParser = require("mailparser").simpleParser;
 const Messages = require("../messages/message-model");
 const Promise = require('bluebird')
 
-module.exports = {
-  getMail
-};
-
 function getUIDs(imap) {
-  
+
 }
 
 function getOneMail(obj,emailTo, userId) {
@@ -67,7 +63,7 @@ function getConfig(imap) {
     };
 }
 
-function getEmails(results) {
+export function getEmails(results) {
     return results.map(email => {
         return new Promise((resolve, reject) => {
             var all = _.find(email.parts, { which: "" });

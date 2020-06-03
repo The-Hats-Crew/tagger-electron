@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { sendEmail, changeIsComposing } from "../../actions/composerActions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {FaTimesCircle} from "react-icons/fa";
 
 export const Compose = props => {
     // this is the state for the email object that gets sent off using nodemailer on the backend
@@ -35,7 +34,7 @@ export const Compose = props => {
         <div className="overlay">
         </div>
         <div className="compose-card col">
-            <FontAwesomeIcon icon={faTimesCircle} className="close end" onClick={changeIsComposing}/>
+            <FaTimesCircle className="close end" onClick={changeIsComposing}/>
             <input type="email" placeholder="To" name="to" id="receiver" value={email.to} onChange={handleChange} />
             <input type="email" placeholder="CC" name="cc" id="cc" value={email.cc} onChange={handleChange} />
             <input type="email" placeholder="BCC" name="bcc" id="bcc" value={email.bcc} onChange={handleChange} />

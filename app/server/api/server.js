@@ -1,10 +1,8 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const messageRouter = require("./messages/message-router");
-const smtpRouter = require("./smtp/smtp-router");
-const imapRouter = require("./imap/imap-router");
+import dotenv from 'dotenv';
+dotenv.config();
+import express from "express";
+import messageRouter from "./messages/message-router";
+import smtpRouter from "./smtp/smtp-router";
 
 
 const server = express();
@@ -14,4 +12,4 @@ server.use("/emails", messageRouter);
 server.use("/smtp", smtpRouter)
 // server.use("/imap", imapRouter);
 
-module.exports = server;
+export default server;
