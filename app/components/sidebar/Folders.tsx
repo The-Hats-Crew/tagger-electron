@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding, checkNewMail } from '../../actions';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faInbox,
-  faFolderOpen,
-  faEnvelope
-} from "@fortawesome/free-solid-svg-icons";
+import {FaInbox, FaFolderOpen, FaEnvelope} from 'react-icons/fa';
 
 export const Folders = props => {
 
@@ -19,7 +14,14 @@ export const Folders = props => {
   }
 
   useEffect(() => {
-    if(!props.isChecking){
+    const numMinutes = 10;
+    const emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+    return () => clearInterval(emailInterval)
+  }, [])
+
+
+  useEffect(() => {
+    if (!props.isChecking) {
       console.log('HERREEEEE', props.label, props.pageNum, props.isSearch)
       props.getEmails(props.label, props.pageNum, props.isSearch)
     }
@@ -27,19 +29,25 @@ export const Folders = props => {
   }, [props.label, props.isChecking])
 
   useEffect(() => {
-    if(props.lastUid){
+    if (props.lastUid) {
       props.checkNewMail(props.lastUid);
     }
   }, [props.lastUid])
 
+  function setupBackgroundTimers(numMinutes) {
+    props.checkNewMail()
+    // update after 1 second, then every 10 minutes
+    console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
+  }
+
   return (
     <nav>
       {/* this onClick sets the snippets to filter email by received */}
-      <li onClick={() => setFilter("inbox")}><FontAwesomeIcon icon={faInbox} />Inbox</li>
+      <li onClick={() => setFilter("inbox")}><FaInbox />Inbox</li>
       {/* this onClick sets the snippets to filter email by sent */}
-      <li onClick={() => setFilter('sent')}><FontAwesomeIcon icon={faEnvelope} />Sent</li>
+      <li onClick={() => setFilter('sent')}><FaEnvelope />Sent</li>
       {/* this onClick sets the snippets to filter email by drafts */}
-      <li onClick={() => setFilter('draft')}><FontAwesomeIcon icon={faFolderOpen} />Draft</li>
+      <li onClick={() => setFilter('draft')}><FaFolderOpen />Draft</li>
     </nav>
   )
 }

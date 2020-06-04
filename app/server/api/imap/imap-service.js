@@ -1,7 +1,7 @@
-const imapSimple = require('imap-simple');
-const simpleParser = require('mailparser').simpleParser;
-const messagesModel = require('../messages/message-model');
-const { ipcMain } = require('electron');
+import imapSimple from 'imap-simple';
+import mailparser from 'mailparser'
+const simpleParser = mailparser.simpleParser;
+import * as messagesModel from '../messages/message-model';
 
 async function getLastMessageByUserId(taggerUserId) {
   try {
@@ -13,18 +13,16 @@ async function getLastMessageByUserId(taggerUserId) {
   }
 }
 
-async function getLatestMail(imapUser, imapPassword, imapServer, lastMessageId) {
+export async function getLatestMail(imapUser, imapPassword, imapServer, lastMessageId) {
   const taggerUserId = 1; // TEMP SINGLE USER
   let lastMessage = await getLastMessageByUserId(taggerUserId);
   let startUID = 1;
 
   if(lastMessage && lastMessage !== 'null'){
-    console.log(lastMessage)
     startUID = lastMessage.uid;
   }
 
   if(lastMessageId && lastMessageId !== 'null'){
-    console.log(lastMessageId)
     startUID = Number(lastMessageId);
   }
   let endUID = startUID + 500;
@@ -43,7 +41,6 @@ async function getLatestMail(imapUser, imapPassword, imapServer, lastMessageId) 
   });
 
   const box = await imapConnection.openBox('[Gmail]/All Mail');
-  console.log(box);
   if(endUID > box.nextuid){
     endUID = box.nextuid;
   }
@@ -131,14 +128,9 @@ function addMessagesToDb(dboMessages) {
   });
 }
 
-function checkForNewMail(lastMessageId) {
+export function checkForNewMail(lastMessageId) {
   console.log('Checking for new messages...');
   return new Promise((resolve, reject) => {
     resolve(getLatestMail('taggerlabs20@gmail.com', 'Lambdalabs20!', 'imap.gmail.com')); // TEMP TEMP TEMP
   })
 }
-
-module.exports = {
-  getLatestMail,
-  checkForNewMail
-};

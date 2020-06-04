@@ -7,8 +7,7 @@ import Operations from './Operations';
 import Single from './Single';
 import SimpleBar from 'simplebar-react';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
+import { FaUserCircle } from "react-icons/fa";
 
 import { makeHtmlSafe } from "../../utils/MessageHelper";
 
@@ -26,7 +25,7 @@ export const EmailSection = props => {
                 <div className="thread-window">
                     <div className="thread-head row">
                         <div className="thread-contact row btn">
-                            <FontAwesomeIcon icon={faUserCircle} onClick={() => handleAnalyticsBar(props.viewemail.from)} className="thread-avatar" />
+                            <FaUserCircle onClick={() => handleAnalyticsBar(props.viewemail.from)} className="thread-avatar" />
                             <h3>{props.viewemail.name}</h3>
                         </div>
                         <div className="thread-actions row">

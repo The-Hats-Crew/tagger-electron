@@ -4,7 +4,7 @@ export const CHECKING_NEW_MAIL_START = "CHECKING_NEW_MAIL_START";
 export const CHECKING_NEW_MAIL_SUCCESS = "CHECKING_NEW_MAIL_SUCCESS";
 export const CHECKING_NEW_MAIL_FAILED = "CHECKING_NEW_MAIL_SUCCESS";
 
-import {SET_LAST_UID} from "./";
+import {SET_LAST_UID} from ".";
 
 import {IpcClient} from 'ipc-express';
 import {ipcRenderer} from 'electron';
@@ -28,7 +28,7 @@ export const checkNewMail = (lastMessageId = null) => dispatch => {
         dispatch({type: CHECKING_NEW_MAIL_SUCCESS})
         dispatch({type: SET_LAST_UID, payload: res.data.lastUid})
       } else {
-        console.error("something went wrong")
+        console.error(res.data.error)
         dispatch({type: CHECKING_NEW_MAIL_FAILED})
         dispatch({type: SET_LAST_UID, payload: res.data.lastUid})
       }

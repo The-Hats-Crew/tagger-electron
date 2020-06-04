@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setAnalyticsBar } from '../../actions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { FaUserCircle, FaTimesCircle } from "react-icons/fa";
 
 export const Analytics = props => {
 
@@ -15,10 +14,10 @@ export const Analytics = props => {
 
     return (
         <div className="analytics-bar">
-            <FontAwesomeIcon icon={faTimesCircle} className= "analytics-bar-close btn" onClick={closeAnalytics}/>
+            <FaTimesCircle className= "analytics-bar-close btn" onClick={closeAnalytics}/>
 
             <div className= "analytics-avatar col">
-            <FontAwesomeIcon icon={faUserCircle} className="analytics-bar-avatar"/>
+            <FaUserCircle className="analytics-bar-avatar"/>
             <h3>{props.address}</h3>
             <h2>{props.name}</h2>
             {/* maps over over the everyone it was sent to. prevously it was done mapping over a to object */}

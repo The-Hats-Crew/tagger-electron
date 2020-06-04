@@ -1,5 +1,6 @@
-const imapRouter = require("express").Router();
-const imapModel = require("./imap-model");
+import express from "express";
+const imapRouter = express.Router();
+import * as imapModel from "./imap-model";
 
 // taggerlabs20@gmail.com
 // Lambdalabs20!
@@ -21,7 +22,7 @@ imapRouter.get("/get-latest", async (req, res) => {
         imapPassword,
         imapServer
       );
-      
+
       res.status(200).json(allEmails.length + " new messages arrived");
     }
     catch (e) {
@@ -30,5 +31,4 @@ imapRouter.get("/get-latest", async (req, res) => {
   }
 });
 
-
-module.exports = imapRouter;
+export default imapRouter;

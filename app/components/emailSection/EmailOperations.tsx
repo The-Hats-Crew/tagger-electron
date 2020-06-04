@@ -2,34 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setEmailOperation } from '../../actions';
 import SimilarButton from './SimilarButton';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faReply, faReplyAll, faTrashAlt, faShare} from "@fortawesome/free-solid-svg-icons";
+import {FaReply, FaReplyAll, FaTrashAlt, FaShare} from "react-icons/fa";
 
 export const EmailOperations = props => {
 
   return (
       <>
       <SimilarButton />
-      <FontAwesomeIcon
-          icon={faReply}
+      <FaReply
           onClick={() => {
             props.setEmailOperation('reply')
           }}
       />
-      <FontAwesomeIcon
-          icon={faReplyAll}
+      <FaReplyAll
           onClick={() => {
             props.setEmailOperation('replyall')
           }}
       />
-      <FontAwesomeIcon
-          icon={faShare}
+      <FaShare
           onClick={() => {
             props.setEmailOperation('forward')
           }}
       />
-      <FontAwesomeIcon
-          icon={faTrashAlt}
+      <FaTrashAlt
           onClick={() => {
             //setReplyIsHidden(false);
             // todo: need a delete email function that moves the email from emails array in imap to a deleted array so that it lives inside of "trash" before permanently deleting

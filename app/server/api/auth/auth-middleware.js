@@ -1,8 +1,6 @@
-const { OAuth2Client } = require("google-auth-library");
+import { OAuth2Client } from "google-auth-library";
 
-module.exports = { auth };
-
-function auth(req, res, next) {
+export function auth(req, res, next) {
     const CLIENT_ID = process.env.CLIENT_ID;
     const client = new OAuth2Client(CLIENT_ID);
     console.log("AUTH")

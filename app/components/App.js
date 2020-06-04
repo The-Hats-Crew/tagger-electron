@@ -15,10 +15,6 @@ const App = props => {
 
   const [ composer, setComposer ] = useState(false)
 
-  useEffect(() => {
-
-  }, [])
-
   return (
     <>
     <TopBar />

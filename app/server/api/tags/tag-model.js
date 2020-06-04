@@ -1,17 +1,6 @@
-const db = require("../../data/dbConfig.js");
+import db from "../../data/dbConfig";
 
-module.exports = {
-  findTags,
-  findTagById,
-  updateTag,
-  deleteTag,
-  addTag,
-  getTagsByMessageId
-};
-
-
-
-function addTag(tag) {
+export function addTag(tag) {
   return db("tags")
     .insert(tag, "id")
     .then(ids => {
@@ -20,24 +9,24 @@ function addTag(tag) {
     });
 }
 
-function findTags() {
+export function findTags() {
   return db("tags");
 }
 
-function findTagById(id) {
+export function findTagById(id) {
   return db("tags")
     .select("*")
     .where({ id })
     .first();
 }
-function getTagsByMessageId(messageId) {
+export function getTagsByMessageId(messageId) {
   return db("tags")
     .join("emails", "emails.id", "tags.email_id")
     .select("tags.tag")
     .where("emails.message_id", messageId);
 }
 
-function updateTag(id, changes) {
+export function updateTag(id, changes) {
   return db("tags")
     .where({ id })
     .update(changes, "id")
@@ -46,7 +35,7 @@ function updateTag(id, changes) {
     });
 }
 
-function deleteTag(id) {
+export function deleteTag(id) {
   return db("tags")
     .where({ id })
     .del();
