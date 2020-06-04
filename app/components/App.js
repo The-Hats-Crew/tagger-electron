@@ -7,12 +7,9 @@ import EmailList from './components/emailList/EmailList';
 import EmailSection from './components/emailSection/EmailSection';
 import AnalyticsBar from './components/analytics/Analytics';
 import Compose from './components/compose/Compose';
-import {emit} from 'eiphop'
-import { ipcRenderer } from "electron";
 import './App.scss';
 
 const App = props => {
-
   const [ composer, setComposer ] = useState(false)
 
   return (

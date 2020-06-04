@@ -1,9 +1,8 @@
-require("dotenv").config();
-const express = require("express");
-const authToken = require("./auth/auth-token")
-const messageRouter = require("./messages/message-router");
-const smtpRouter = require("./smtp/smtp-router");
-const imapRouter = require("./imap/imap-router");
+import express from "express";
+import authToken from "./auth/auth-token";
+import messageRouter from "./messages/message-router";
+import smtpRouter from "./smtp/smtp-router";
+import imapRouter from "./imap/imap-router";
 
 
 const server = express();

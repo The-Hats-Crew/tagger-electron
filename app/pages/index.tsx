@@ -8,9 +8,12 @@ import EmailSection from "../components/emailSection/EmailSection";
 import Compose from "../components/compose/Compose";
 import AnalyticsBar from "../components/analytics/Analytics";
 import { checkNewMail, setLastUid } from "../actions";
+import { IpcClient } from "ipc-express";
+import { ipcRenderer } from "electron";
 import "../styles/index.global.scss";
 
 const Index = (props) => {
+  const ipc = new IpcClient(ipcRenderer)
   const [composer, setComposer] = useState(false);
 
   return (
