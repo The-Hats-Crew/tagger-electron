@@ -189,7 +189,7 @@ router.post('/search/:column/:page', (req, res) => {
 });
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
-router.get('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { lastMessageId } = req.query;
   imapService
     .checkForNewMail(lastMessageId)
