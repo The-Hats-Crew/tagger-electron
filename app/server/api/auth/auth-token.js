@@ -1,17 +1,14 @@
-require('dotenv').config();
-const router = require('express').Router();
-const jwt = require('jsonwebtoken');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express'
+const router = express.Router();
+import jwt from 'jsonwebtoken';
 
-router.post('/token', (req, res) => {
+router.post('/', (req, res) => {
   const token = generateToken();
-  req.body = token
-    .then(token => {
-      res.send({ message: 'welcome!', token });
-    })
-    .catch(error => {
-      res.send({ error: error });
-    });
-});
+  req.body = token;
+  res.send({ message: 'welcome!', token });
+})
 
 function generateToken() {
   const payload = {
@@ -29,4 +26,4 @@ function generateToken() {
   return jwt.sign(payload, secret, options);
 }
 
-module.exports = router;
+export default router;
