@@ -14,9 +14,7 @@ function generateToken() {
   const payload = {
     provider: 'gmail',
     token: {
-      refresh_token: process.env.REFRESH_TOKEN,
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET
+      refresh_token: process.env.REFRESH_TOKEN
     }
   };
   const secret = process.env.JWT_SECRET || "this is a secret"
