@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export function auth(req, res, next) {
   const token = req.body.id_token;
-  const secret = process.env.CLIENT_SECRET;
+  const secret = process.env.JWT_SECRET || "This is a secret"
   if (token) {
     jwt.verify(token, secret, (error, decodedToken) => {
       if (error) {
