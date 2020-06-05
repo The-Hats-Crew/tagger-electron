@@ -13,6 +13,7 @@ import * as Messages from './message-model';
 import * as Tags from '../tags/tag-model';
 import * as Mails from '../imap/imap-model';
 import * as imapService from '../imap/imap-service';
+import * as dsService from "../tagger-ds/tagger-ds-service";
 import { auth } from '../auth/auth-middleware';
 import { imapNestedFolders } from './message-middleware';
 
@@ -77,7 +78,6 @@ router.get('/label/:label/:page', (req, res) => {
     .then(emails => {
       Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
         .then(count => {
-          console.log(emails);
           res.send({
             totalCount: count,
             messages: emails
@@ -190,20 +190,38 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.post('/', auth, async (req, res) => {
+  console.log(req.decodedToken);
   const { lastMessageId } = req.query;
-  imapService
-    .checkForNewMail(lastMessageId)
-    .then(data => {
-      res.send({
-        lastUid: data,
-        success: true
-      });
-    })
-    .catch(err => {
-      res.send({
-        success: false
-      });
+  dsService.checkNewMail("17285331090b6424", req.decodedToken)
+  .then(response => {
+    return response.json()
+  })
+  .then(json => {
+    console.log(json)
+    res.send({
+      lastUid: null,
+      success: true,
     });
+  })
+  .catch(err => {
+    console.error(err);
+    res.send({
+      success: false
+    })
+  });
+  // imapService
+  //   .checkForNewMail(lastMessageId)
+  //   .then(data => {
+  //     res.send({
+  //       lastUid: data,
+  //       success: true
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.send({
+  //       success: false
+  //     });
+  //   });
 });
 
 // ********** THE ROUTES WITH STREAMING **********
