@@ -19,9 +19,11 @@ export const discard = () => dispatch => {
     dispatch({ type:DISCARD })
 }
 
-export const checkNewMail = (lastMessageId = null) => dispatch => {
+export const checkNewMail = (lastMessageId = null, token) => dispatch => {
   dispatch({type: CHECKING_NEW_MAIL_START});
-  ipc.get("/emails?lastMessageId=" + lastMessageId)
+  ipc.post("/emails?lastMessageId=" + lastMessageId, {
+    id_token: token
+  })
     .then(res => {
       console.log("LAST UID*******", res.data)
       if(res.data.success){

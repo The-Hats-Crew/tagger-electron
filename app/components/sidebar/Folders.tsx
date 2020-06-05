@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding, checkNewMail } from '../../actions';
-import {FaInbox, FaFolderOpen, FaEnvelope} from 'react-icons/fa';
+import { FaInbox, FaFolderOpen, FaEnvelope } from 'react-icons/fa';
 
 export const Folders = props => {
+  const {push} = useHistory();
 
   const setFilter = (folder) => {
     props.resetSearch()
@@ -35,9 +37,14 @@ export const Folders = props => {
   }, [props.lastUid])
 
   function setupBackgroundTimers(numMinutes) {
-    props.checkNewMail()
-    // update after 1 second, then every 10 minutes
-    console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
+    const token = localStorage.getItem("token");
+    if (token) {
+      props.checkNewMail(props.lastUid, token)
+      // update after 1 second, then every 10 minutes
+      console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
+    } else {
+      push("/login")
+    }
   }
 
   return (
