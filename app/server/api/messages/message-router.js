@@ -190,9 +190,14 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.post('/', auth, async (req, res) => {
-  console.log(req.decodedToken);
-  const { lastMessageId } = req.query;
-  dsService.checkNewMail(null, req.decodedToken)
+  let lastMessageId = req.query.lastMessageId === "null" ? null : req.query.lastMessageId;
+
+  if(!lastMessageId){
+    const lastMessage = await Messages.getLastEmailFromUser(1);
+    lastMessageId = lastMessage ? lastMessage.message_id : null;
+  }
+
+  dsService.checkNewMail(lastMessageId, req.decodedToken)
   .then(() => {
     res.send({
       success: true,

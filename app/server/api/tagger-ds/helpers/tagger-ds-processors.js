@@ -1,4 +1,5 @@
 import * as messagesModel from '../../messages/message-model';
+import * as tagsModel from "../../tags/tag-model";
 
 export function parsedMessagesToDBO(msg) {
   const mimeType = msg.payload.mimeType;
@@ -14,17 +15,21 @@ export function parsedMessagesToDBO(msg) {
     body = msg.payload.parts[0].parts[1].body.data;
   }
 
-  let buffBody = Buffer.from(body, 'base64');
+  const fromEmail = emailFrom[emailFrom.length - 1].replace(/<|>/g, "");
+  const fromName = emailFrom.length > 1 ? emailFrom.slice(0, emailFrom.length - 1).join(" ") : emailFrom[0];
+
+  const date = new Date(msg.payload.headers.find(header => header.name === 'Date').value)
+  const buffBody = Buffer.from(body, 'base64');
   return {
-    from: emailFrom.length === 2 ? emailFrom[1] : emailFrom[0],
-    name: emailFrom.length === 2 ? emailFrom[0] : emailFrom[0],
+    from: fromEmail,
+    name: fromName,
     to: msg.payload.headers.find(header => header.name === 'To').value,
     subject: msg.payload.headers.find(header => header.name === 'Subject')
       .value,
     email_body: buffBody.toString('ascii'),
     email_body_text: msg.snippet,
     message_id: msg.id,
-    date: msg.payload.headers.find(header => header.name === 'Date').value,
+    date: date,
     labels: msg.labelIds.toString(),
     gMsgId: msg.id,
     gmThreadID: msg.threadId,
@@ -33,12 +38,26 @@ export function parsedMessagesToDBO(msg) {
 }
 
 export function addMessagesToDb(dboMessage) {
-  messagesModel
+  return messagesModel
     .addEmail(dboMessage)
     .then(res => {
       console.log(`${dboMessage.message_id} was added`);
+      return res;
     })
     .catch(err => {
       console.log(`${dboMessage.message_id} was NOT added: ${err.code}`);
+      return err;
     });
+}
+
+export function addTagsToDb(id, tags){
+  tags.forEach(tag => {
+    tagsModel.addTag({tag, email_id: id})
+    .then(res => {
+      console.log(`${tag} was added`)
+    })
+    .catch(err => {
+      console.log(`${tag} was not added`, err)
+    })
+  })
 }

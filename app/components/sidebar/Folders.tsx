@@ -23,11 +23,19 @@ export const Folders = props => {
 
 
   useEffect(() => {
+    let checkingEmailsInterval;
     if (!props.isChecking) {
       console.log('HERREEEEE', props.label, props.pageNum, props.isSearch)
       props.getEmails(props.label, props.pageNum, props.isSearch)
+      clearInterval(checkingEmailsInterval);
+    } else {
+      checkingEmailsInterval = setInterval(() => {
+        props.getEmails(props.label, props.pageNum, props.isSearch)
+      }, 1000)
+
     }
     //eslint-disable-next-line
+    return () => clearInterval(checkingEmailsInterval);
   }, [props.label, props.isChecking])
 
   useEffect(() => {

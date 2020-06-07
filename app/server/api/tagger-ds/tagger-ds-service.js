@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fetch from 'node-fetch';
 import fs from "fs";
-import Collector, {parsedMessagesToDBO, addMessagesToDb} from './helpers/tagger-ds-processors';
+import {parsedMessagesToDBO, addMessagesToDb, addTagsToDb} from './helpers/tagger-ds-processors';
 import { Readable } from 'stream';
 const dsUrl = process.env.DS_PROD_URL || 'http://localhost:5000';
 
@@ -37,13 +37,14 @@ export const checkNewMail = (lastIndex = null, credentials) => {
         let str = '';
         let message;
 
-        stream.on("data", (chunk) => {
+        stream.on("data", async (chunk) => {
           str += chunk.toString("utf-8");
           try {
             message = JSON.parse(str);
             str = '';
             const parsedMessage = parsedMessagesToDBO(message);
-            addMessagesToDb(parsedMessage);
+            const addedMessage = await addMessagesToDb(parsedMessage);
+            addTagsToDb(addedMessage.id, message.smartTags);
           } catch (error) {
 
           }
