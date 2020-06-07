@@ -3,9 +3,9 @@ import express from 'express';
 const router = express.Router();
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import fs from 'fs';
 import path from "path";
 import imaps from 'imap-simple';
+import fs from "fs";
 
 // ********** MODELS **********
 import * as Users from '../users/user-model';
@@ -192,23 +192,13 @@ router.post('/search/:column/:page', (req, res) => {
 router.post('/', auth, async (req, res) => {
   console.log(req.decodedToken);
   const { lastMessageId } = req.query;
-  dsService.checkNewMail("17285331090b6424", req.decodedToken)
-  .then(response => {
-    return response.json()
-  })
-  .then(json => {
-    console.log(json)
+  dsService.checkNewMail(null, req.decodedToken)
+  .then(() => {
     res.send({
-      lastUid: null,
       success: true,
-    });
-  })
-  .catch(err => {
-    console.error(err);
-    res.send({
-      success: false
+      lastUid: null
     })
-  });
+  })
   // imapService
   //   .checkForNewMail(lastMessageId)
   //   .then(data => {
