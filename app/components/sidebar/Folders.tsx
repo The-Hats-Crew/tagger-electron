@@ -22,12 +22,10 @@ export const Folders = props => {
     const socket = io("http://localhost:3001");
 
     socket.on("total_count", totalCount => {
-      console.log("Total Count", totalCount);
       props.setTotalCount(totalCount);
     })
 
     socket.on("current_count", currentCount => {
-      console.log("Current Count", currentCount);
       props.setCurrentCount(currentCount);
     })
 
@@ -80,13 +78,15 @@ export const Folders = props => {
   )
 }
 
-const mapStateToProps = ({ inbox, operation }) => ({
+const mapStateToProps = ({ inbox, operation, progress }) => ({
   label: inbox.label,
   pageNum: inbox.pageNum,
   isSearch: inbox.isSearch,
   isChecking: operation.isChecking,
   failed: operation.failed,
-  lastUid: inbox.lastUid
+  lastUid: inbox.lastUid,
+  totalCount: progress.totalCount,
+  currentCount: progress.currentCount
 })
 
 export default connect(mapStateToProps, { getEmails, closeEmail, setLabel, resetSearch, setAnalyticsBar, setSliding, checkNewMail, setTotalCount, setCurrentCount })(Folders);

@@ -13,12 +13,12 @@ export const progressReducer = (state = initialState, {type, payload}) => {
     case SET_TOTAL_COUNT:
       return {
         ...state,
-        payload
+        totalCount: payload
       }
     case SET_CURRENT_COUNT:
       return {
         ...state,
-        payload
+        currentCount: payload
       }
     default:
       return state;
