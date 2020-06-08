@@ -49,26 +49,19 @@ The idea of this project was to develop an email app similar to Gmail, Edison ma
 
 ### Front end built using:
 
-#### _React, Electron, and Styled Components_
+#### _React, Electron_
 
-🚫 Why did you choose this framework?
-
--    point one
--    point two
--    point three
--    point four
+-    React allows for dynamic applications to re-render components within the virtual DOM when the state of that component changes.
+-    Electron offers a framework for building cross-platform applications for the desktop using web technologies.
 
 🚫List the rest of the front end features and libraries in the same format as the framework above.
 
-#### Front end deployed to `🚫insert service here`
-
-#### [Back end](🚫link to back end repo here) built using:
-
 ####  _NodeJS, Express, Electron, and Socket.io_
 
--    point one
--    point two
--    point three
+-    NodeJS supports writing to a SQLite file and is bundled with Electron
+-    Electron supports frontend and back end development in a single application
+-    Express makes it easy to create endpoints and gives access to the Electron app's back end from the frontend.
+-    Socket.io created websockets to easily, and quickly send data from the back end to the frontend.
 
 🚫 List the rest of the back end end features and libraries in the same format as the framework above
 
