@@ -1,9 +1,8 @@
-// import { OAuth2Client } from "google-auth-library";
 import jwt from 'jsonwebtoken';
 
 export function auth(req, res, next) {
   const token = req.body.id_token;
-  const secret = process.env.JWT_SECRET || "This is a secret"
+  const secret = process.env.JWT_SECRET || "this is a secret";
   if (token) {
     jwt.verify(token, secret, (error, decodedToken) => {
       if (error) {

@@ -8,10 +8,11 @@ import thunk from "redux-thunk";
 import { inboxReducer } from "./inboxReducer";
 import { composerReducer } from "./composerReducer";
 import { sidebarReducer } from "./sidebarReducer";
-import { analyticsBarReducer } from './analyticsBarReducer'; // added the anaylytics bar to the store. 
+import { analyticsBarReducer } from './analyticsBarReducer'; // added the anaylytics bar to the store.
 import { viewEmailReducer } from './viewEmailReducer';
 import { setOperationReducer } from './emailOperationReducer';
 import { searchKeyword } from './searchReducer';
+import { progressReducer } from "./progressReducer";
 
 export default function createRootReducer(history: History) {
   return combineReducers({
@@ -22,6 +23,7 @@ export default function createRootReducer(history: History) {
     analyticsbar: analyticsBarReducer, // this is the reducer i added.
     viewEmail:viewEmailReducer,
     operation:setOperationReducer,
-    search:searchKeyword
+    search:searchKeyword,
+    progress: progressReducer
   });
 }

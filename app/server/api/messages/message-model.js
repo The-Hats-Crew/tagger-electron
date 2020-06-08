@@ -127,7 +127,7 @@ export function deleteEmail(uid) {
 
 export function getLastEmailFromUser(userid) {
   return db("emails")
-    .orderBy("uid", "desc")
+    .orderBy("id", "desc")
     .where("user_id", userid)
     .first();
 }
@@ -141,7 +141,7 @@ export function findEmailbyId(id) {
 export function addEmail(email) {
   return db("emails")
     .insert(email, "id")
-    .then(ids => {
+    .then(([ids]) => {
       return findEmailbyId(ids);
     });
 }
