@@ -17,12 +17,13 @@ export function parsedMessagesToDBO(msg) {
 
   const fromEmail = emailFrom[emailFrom.length - 1].replace(/<|>/g, "");
   const fromName = emailFrom.length > 1 ? emailFrom.slice(0, emailFrom.length - 1).join(" ") : emailFrom[0];
-
+  const reply_to = msg.payload.headers.find(header => header.name === "Reply-To");
   const date = new Date(msg.payload.headers.find(header => header.name === 'Date').value)
   const buffBody = Buffer.from(body, 'base64');
-  return {
+  const response =  {
     from: fromEmail,
     name: fromName,
+    reply_to: reply_to ? reply_to.value : msg.payload.headers.find(header => header.name === "From").value,
     to: msg.payload.headers.find(header => header.name === 'To').value,
     subject: msg.payload.headers.find(header => header.name === 'Subject')
       .value,
@@ -35,6 +36,7 @@ export function parsedMessagesToDBO(msg) {
     gmThreadID: msg.threadId,
     user_id: 1 // TODO
   };
+  return response
 }
 
 export function addMessagesToDb(dboMessage) {

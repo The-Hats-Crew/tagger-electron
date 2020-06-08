@@ -1,23 +1,36 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
-import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding, checkNewMail } from '../../actions';
+import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding, checkNewMail, setTotalCount, setCurrentCount } from '../../actions';
 import { FaInbox, FaFolderOpen, FaEnvelope } from 'react-icons/fa';
+const io = require("socket.io-client");
 
 export const Folders = props => {
-  const {push} = useHistory();
-
+  const { push } = useHistory();
   const setFilter = (folder) => {
     props.resetSearch()
     props.closeEmail()
     props.setLabel(folder)
     props.setAnalyticsBar(false);
     props.setSliding(false);
+
   }
 
   useEffect(() => {
     const numMinutes = 10;
     const emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+    const socket = io("http://localhost:3001");
+
+    socket.on("total_count", totalCount => {
+      console.log("Total Count", totalCount);
+      props.setTotalCount(totalCount);
+    })
+
+    socket.on("current_count", currentCount => {
+      console.log("Current Count", currentCount);
+      props.setCurrentCount(currentCount);
+    })
+
     return () => clearInterval(emailInterval)
   }, [])
 
@@ -76,4 +89,4 @@ const mapStateToProps = ({ inbox, operation }) => ({
   lastUid: inbox.lastUid
 })
 
-export default connect(mapStateToProps, { getEmails, closeEmail, setLabel, resetSearch, setAnalyticsBar, setSliding, checkNewMail })(Folders);
+export default connect(mapStateToProps, { getEmails, closeEmail, setLabel, resetSearch, setAnalyticsBar, setSliding, checkNewMail, setTotalCount, setCurrentCount })(Folders);
