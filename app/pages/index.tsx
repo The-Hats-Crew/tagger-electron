@@ -7,6 +7,7 @@ import EmailList from "../components/emailList/EmailList";
 import EmailSection from "../components/emailSection/EmailSection";
 import Compose from "../components/compose/Compose";
 import AnalyticsBar from "../components/analytics/Analytics";
+import ProgressBar from "../components/progressBar";
 import { checkNewMail, setLastUid } from "../actions";
 import "../styles/index.global.scss";
 
@@ -21,6 +22,7 @@ const Index = (props) => {
         <Pagination />
         <div className={props.isViewEmail ? 'email-list-min' : 'email-list'}> {/* className="email-list-min" or email-list for full width */}
           <EmailList setComposer={setComposer} />
+          <ProgressBar />
         </div>
         {props.isViewEmail && (
           <div className="email-body" id={props.analyticsBar ? 'email-body-analytics' : null}> {/* add the id="email-body-analytics" for analytics column */}

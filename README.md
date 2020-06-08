@@ -4,19 +4,19 @@
 
 🚫 Each student has a required minimum number of meaningful PRs each week per the rubric. Contributing to docs does NOT count as a PR to meet your weekly requirements.
 
-# 1️⃣ Title of project goes here
+# 1️⃣ Tagger | Intelligent Search (Electron App)
 
 1️⃣ You can find the deployed project at [🚫URL NAME GOES HERE](🚫copy and paste URL here).
 
 ## 4️⃣ Contributors
 
-🚫Add contributor info below, make sure add images and edit the social links for each member. Add to or delete these place-holders as needed
 
-|                                       [Student 1](https://github.com/)                                        |                                       [Student 2](https://github.com/)                                        |                                       [Student 3](https://github.com/)                                        |                                       [Student 4](https://github.com/)                                        |                                       [Student 5](https://github.com/)                                        |
+
+|                                       [Anthony Kawa](https://github.com/frankie95667)                                        |                                       [Matthew Bergeron](https://github.com/bergeronmatt)                                        |                                       [Adrian Nasaruk](https://github.com/adriannasaruk)                                        | 
 | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
-|                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |
-|                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/)                 |            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/honda0306)             |           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Mister-Corn)            |          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/NandoTheessen)           |            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)             |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) |
+|                      [<img src="https://avatars2.githubusercontent.com/u/1223704?s=460&u=37f4e54cc0befc6dc15adba96066e4655ec22cf8&v=4" width = "200" />](https://github.com/frankie95667)                       |                      [<img src="https://avatars2.githubusercontent.com/u/46853842?s=460&u=786ac0d242b52f242cb017d17859a3ef206dc7e6&v=4" width = "200" />](https://github.com/bergeronmatt)                       |                      [<img src="https://avatars2.githubusercontent.com/u/59716143?s=460&u=90efa5dc24e4fccadfc0f352854c0a592b1c2740&v=4" width = "200" />](https://github.com/adriannasaruk)                       |          
+|                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/frankie95667)                 |            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/bergeronmatt)             |           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/adriannasaruk)            | 
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/anthony-kawa-7b34043a/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/matthew-bergeron-803888132/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/adrian-nasaruk-73097b183/) | 
 
 <br>
 <br>
@@ -58,7 +58,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 ### Front end built using:
 
-#### _Front end framework goes here_
+#### _React, Electron, and Styled Components_
 
 🚫 Why did you choose this framework?
 
@@ -73,7 +73,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 #### [Back end](🚫link to back end repo here) built using:
 
-#### 🚫 back end framework goes here
+####  _NodeJS, Express, Electron, and Socket.io_
 
 -    point one
 -    point two
@@ -88,12 +88,6 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 🚫Replace text below with a description of the API
 
 Water's like me. It's laaazy ... Boy, it always looks for the easiest way to do things A little happy sunlight shining through there. Let all these little things happen. Don't fight them. Learn to use them. Even the worst thing we can do here is good.
-
-## 2️⃣ Payment API here
-
-🚫Replace text below with a description of the API
-
-This is the way you take out your flustrations. Get away from those little Christmas tree things we used to make in school. Isn't it fantastic that you can change your mind and create all these happy things? Everything's not great in life, but we can still find beauty in it.
 
 ## 3️⃣ Misc API here
 
@@ -119,16 +113,12 @@ In order for the app to function correctly, the user must set up their own envir
 
 🚫These are just examples, replace them with the specifics for your app
 
-    *  REACT_APP_apiKey - this is your Google API key, which can be generated in the Google Cloud Console
-    *  REACT_APP_authDomain - when you set up your Firebase project, this information will be in the dashboard
-    *  REACT_APP_databaseURL - in the Firebase dashboard
-    *  REACT_APP_projectID - in the Firebase dashboard
-    *  REACT_APP_storageBucket - in the Firebase dashboard
-    *  REACT_APP_messagingSenderId - in the Firebase dashboard
-    *  REACT_APP_stripe_API - this is your public Stripe API key, generated in the Stripe dashboard
-    *  REACT_APP_backendURL - optional for your local development server
-    *  REACT_APP_clientid - this is the Stripe_connect clientID, generated in Stripe_connect settings
-    *  REACT_APP_stripe_plan - this is the ID for a second Stripe subscription plan, generated under Stripe products
+    *  REFRESH_TOKEN - This is the refresh token provided after the user logs
+          into their Google account
+    *  CLIENT_ID - This is your Google Client ID, which can be generated in the
+          Google Cloud Console.
+    *  CLIENT_SECRET - This is the Google Client Secred, which is paired with
+          the Client ID and is found in the Google Cloud console
 
 # 5️⃣ Content Licenses
 
