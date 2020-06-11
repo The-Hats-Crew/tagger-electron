@@ -16,10 +16,12 @@ export const checkNewMail = (lastIndex = null, credentials) => {
     recent_id: lastIndex,
     token: {
       ...credentials.token,
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET
+      // client_id: process.env.GOOGLE_CLIENT_ID,
+      // client_id: process.env.DS_CLIENT_ID,
+      // client_secret: process.env.DS_CLIENT_SECRET
     }
   };
+  console.log(postCredentials);
 
   return new Promise((resolve, reject) => {
     io.on('connection', socket => {
@@ -29,15 +31,7 @@ export const checkNewMail = (lastIndex = null, credentials) => {
           'Content-Type': 'application/json'
         },
         keepalive: true,
-        body: JSON.stringify({
-          provider: credentials.provider,
-          recent_id: lastIndex,
-          token: {
-            ...credentials.token,
-            client_id: process.env.CLIENT_ID,
-            client_secret: process.env.CLIENT_SECRET
-          }
-        })
+        body: JSON.stringify(postCredentials)
       })
         .then(response => response.body)
         .then(stream => {
@@ -49,6 +43,7 @@ export const checkNewMail = (lastIndex = null, credentials) => {
             str += chunk.toString('utf-8');
             try {
               message = JSON.parse(str);
+              console.log(message);
 
               console.log('New client connected');
               socket.emit('total_count', message.total_count);

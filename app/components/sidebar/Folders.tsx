@@ -17,8 +17,12 @@ export const Folders = props => {
   }
 
   useEffect(() => {
+    let emailInterval;
     const numMinutes = 10;
-    const emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+    if (!props.isChecking) {
+      console.log("SETTING EMAIL INTERVAL")
+      emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+    }
     const socket = io("http://localhost:3001");
 
     socket.on("total_count", totalCount => {
@@ -28,6 +32,7 @@ export const Folders = props => {
     socket.on("current_count", currentCount => {
       props.setCurrentCount(currentCount);
     })
+
 
     return () => clearInterval(emailInterval)
   }, [])
@@ -50,14 +55,15 @@ export const Folders = props => {
   }, [props.label, props.isChecking])
 
   useEffect(() => {
-    if (props.lastUid) {
-      props.checkNewMail(props.lastUid);
+    if (props.failed) {
+      localStorage.removeItem("token");
+      push('/login')
     }
-  }, [props.lastUid])
+  }, [props.failed])
 
   function setupBackgroundTimers(numMinutes) {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !props.isChecking) {
       props.checkNewMail(props.lastUid, token)
       // update after 1 second, then every 10 minutes
       console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);

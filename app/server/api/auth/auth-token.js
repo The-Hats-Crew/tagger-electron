@@ -1,23 +1,28 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import express from 'express'
+import express from 'express';
 const router = express.Router();
 import jwt from 'jsonwebtoken';
 
 router.post('/', (req, res) => {
-  const token = generateToken();
+
+  const token = generateToken(req.body);
   req.body = token;
   res.send({ message: 'welcome!', token });
-})
+});
 
-function generateToken() {
+function generateToken(token) {
   const payload = {
     provider: 'gmail',
     token: {
-      refresh_token: process.env.REFRESH_TOKEN
+      token: token.token.accessToken
     }
+    // token: {
+    //   refresh_token: process.env.REFRESH_TOKEN
+    // }
   };
-  const secret = process.env.JWT_SECRET || "this is a secret"
+  console.log(payload);
+  const secret = process.env.JWT_SECRET || 'this is a secret';
   const options = {
     expiresIn: '1d'
   };
