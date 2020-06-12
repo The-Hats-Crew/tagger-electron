@@ -9,12 +9,13 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, remote } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import server from "./server/api/server";
 import {IpcServer} from "ipc-express";
+const exec = require("child_process").execFile;
 
 const ipc = new IpcServer(ipcMain)
 
@@ -25,6 +26,11 @@ export default class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+exec(process.resourcesPath ? path.join(process.resourcesPath, "resources/flask-app/app.exe") : path.join(__dirname, "/../resources/flask-app/app.exe"), (err, data) => {
+  console.log(err);
+  console.log(data.toString());
+});
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -72,7 +78,7 @@ const createWindow = async () => {
     }
   });
   ipc.listen(server);
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(`file://${__dirname}/app.html`, { userAgent: "Chrome"});
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
@@ -119,4 +125,3 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
-

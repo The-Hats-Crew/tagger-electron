@@ -2,7 +2,7 @@ export const SET_EMAIL_OPERATION = 'SET_EMAIL_OPERATION';
 export const DISCARD = 'DISCARD';
 export const CHECKING_NEW_MAIL_START = "CHECKING_NEW_MAIL_START";
 export const CHECKING_NEW_MAIL_SUCCESS = "CHECKING_NEW_MAIL_SUCCESS";
-export const CHECKING_NEW_MAIL_FAILED = "CHECKING_NEW_MAIL_SUCCESS";
+export const CHECKING_NEW_MAIL_FAILED = "CHECKING_NEW_MAIL_FAILED";
 
 import {SET_LAST_UID} from ".";
 
@@ -30,7 +30,7 @@ export const checkNewMail = (lastMessageId = null, token) => dispatch => {
         dispatch({type: CHECKING_NEW_MAIL_SUCCESS})
         dispatch({type: SET_LAST_UID, payload: res.data.lastUid})
       } else {
-        console.error(res.data.error)
+        console.error(res.data)
         dispatch({type: CHECKING_NEW_MAIL_FAILED})
         dispatch({type: SET_LAST_UID, payload: res.data.lastUid})
       }
