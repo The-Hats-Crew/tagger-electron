@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { getEmails, setLabel, closeEmail, resetSearch, setAnalyticsBar, setSliding, checkNewMail, setTotalCount, setCurrentCount } from '../../actions';
 import { FaInbox, FaFolderOpen, FaEnvelope } from 'react-icons/fa';
-const io = require("socket.io-client");
+// const io = require("socket.io-client");
 
 export const Folders = props => {
-  const { push } = useHistory();
+  // const { push } = useHistory();
   const setFilter = (folder) => {
     props.resetSearch()
     props.closeEmail()
@@ -16,61 +16,62 @@ export const Folders = props => {
 
   }
 
-  useEffect(() => {
-    let emailInterval;
-    const numMinutes = 10;
-    if (!props.isChecking) {
-      console.log("SETTING EMAIL INTERVAL")
-      emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
-    }
-    const socket = io("http://localhost:3001");
+  // useEffect(() => {
+  //   let emailInterval;
+  //   const numMinutes = 10;
+  //   if (!props.isChecking) {
+  //     console.log("SETTING EMAIL INTERVAL")
+  //     emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+  //   }
+  //   const socket = io("http://localhost:3001");
 
-    socket.on("total_count", totalCount => {
-      props.setTotalCount(totalCount);
-    })
+  //   socket.on("total_count", totalCount => {
+  //     props.setTotalCount(totalCount);
+  //   })
 
-    socket.on("current_count", currentCount => {
-      props.setCurrentCount(currentCount);
-    })
-
-
-    return () => clearInterval(emailInterval)
-  }, [])
+  //   socket.on("current_count", currentCount => {
+  //     props.setCurrentCount(currentCount);
+  //   })
 
 
-  useEffect(() => {
-    let checkingEmailsInterval;
-    if (!props.isChecking) {
-      console.log('HERREEEEE', props.label, props.pageNum, props.isSearch)
-      props.getEmails(props.label, props.pageNum, props.isSearch)
-      clearInterval(checkingEmailsInterval);
-    } else {
-      checkingEmailsInterval = setInterval(() => {
-        props.getEmails(props.label, props.pageNum, props.isSearch)
-      }, 1000)
+  //   return () => clearInterval(emailInterval)
+  // }, [])
 
-    }
-    //eslint-disable-next-line
-    return () => clearInterval(checkingEmailsInterval);
-  }, [props.label, props.isChecking])
 
-  useEffect(() => {
-    if (props.failed) {
-      localStorage.removeItem("token");
-      push('/login')
-    }
-  }, [props.failed])
+  // useEffect(() => {
+  //   let checkingEmailsInterval;
+  //   if (!props.isChecking) {
+  //     console.log('HERREEEEE', props.label, props.pageNum, props.isSearch)
+  //     props.getEmails(props.label, props.pageNum, props.isSearch)
+  //     clearInterval(checkingEmailsInterval);
+  //   } else {
+  //     checkingEmailsInterval = setInterval(() => {
+  //       props.getEmails(props.label, props.pageNum, props.isSearch)
+  //     }, 1000)
 
-  function setupBackgroundTimers(numMinutes) {
-    const token = localStorage.getItem("token");
-    if (token && !props.isChecking) {
-      props.checkNewMail(props.lastUid, token)
-      // update after 1 second, then every 10 minutes
-      console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
-    } else {
-      push("/login")
-    }
-  }
+  //   }
+  //   //eslint-disable-next-line
+  //   return () => clearInterval(checkingEmailsInterval);
+  // }, [props.label, props.isChecking])
+
+  // useEffect(() => {
+  //   console.log(props.failed);
+  //   if (props.failed) {
+  //     localStorage.removeItem("token");
+  //     push('/login')
+  //   }
+  // }, [props.failed])
+
+  // function setupBackgroundTimers(numMinutes) {
+  //   const token = localStorage.getItem("token");
+  //   if (token && !props.isChecking) {
+  //     props.checkNewMail(props.lastUid, token)
+  //     // update after 1 second, then every 10 minutes
+  //     console.log(`Started props.checkForNewMail every ${numMinutes} minutes`);
+  //   } else {
+  //     push("/login")
+  //   }
+  // }
 
   return (
     <nav>

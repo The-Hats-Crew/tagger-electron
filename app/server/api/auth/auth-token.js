@@ -15,7 +15,8 @@ function generateToken(token) {
   const payload = {
     provider: 'gmail',
     token: {
-      token: token.token.accessToken
+      token: token.token.accessToken,
+      ...token.token
     }
     // token: {
     //   refresh_token: process.env.REFRESH_TOKEN

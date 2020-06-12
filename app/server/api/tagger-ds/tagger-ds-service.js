@@ -33,11 +33,17 @@ export const checkNewMail = (lastIndex = null, credentials) => {
         keepalive: true,
         body: JSON.stringify(postCredentials)
       })
-        .then(response => response.body)
-        .then(stream => {
+        .then(response => {
+          if(response.status !== 200){
+            return [response.body, new Error("Something went wrong")]
+          }
+          return [response.body, null]
+        })
+        .then(([stream, error]) => {
           let str = '';
           let message;
           let count = 0;
+          if(error) reject(error)
 
           stream.on('data', async chunk => {
             str += chunk.toString('utf-8');
@@ -60,7 +66,7 @@ export const checkNewMail = (lastIndex = null, credentials) => {
             socket.emit("FromAPI", null)
             resolve('done');
           });
-        });
+        })
     });
   });
   // return axios.post(dsUrl + "/api/sync", {

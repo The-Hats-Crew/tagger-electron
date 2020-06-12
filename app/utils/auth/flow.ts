@@ -168,10 +168,10 @@ export class AuthFlow {
     console.log(this.configuration);
     return this.tokenHandler
       .performTokenRequest(this.configuration, request)
-      .then(response => {
+      .then(async response => {
         this.refreshToken = response.refreshToken;
         this.accessTokenResponse = response;
-        this.performWithFreshTokens();
+        await this.performWithFreshTokens();
         return response;
       })
   }

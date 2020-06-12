@@ -11,6 +11,7 @@ export function auth(req, res, next) {
         });
       } else {
         req.decodedToken = decodedToken;
+        console.log(decodedToken);
         next();
       }
     });

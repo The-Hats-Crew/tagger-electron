@@ -198,10 +198,16 @@ router.post('/', auth, async (req, res) => {
   }
 
   dsService.checkNewMail(lastMessageId, req.decodedToken)
-  .then(() => {
+  .then((response) => {
     res.send({
       success: true,
       lastUid: null
+    })
+  }).catch((err) => {
+    res.send({
+      success: false,
+      lastUid: null,
+      error: err
     })
   })
   // imapService
