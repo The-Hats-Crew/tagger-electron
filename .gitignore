@@ -51,3 +51,6 @@ npm-debug.log.*
 
 # database files
 *.db3
+
+# environmental variables
+.env

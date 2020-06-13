@@ -3,9 +3,9 @@ import express from 'express';
 const router = express.Router();
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import fs from 'fs';
 import path from "path";
 import imaps from 'imap-simple';
+import fs from "fs";
 
 // ********** MODELS **********
 import * as Users from '../users/user-model';
@@ -13,6 +13,7 @@ import * as Messages from './message-model';
 import * as Tags from '../tags/tag-model';
 import * as Mails from '../imap/imap-model';
 import * as imapService from '../imap/imap-service';
+import * as dsService from "../tagger-ds/tagger-ds-service";
 import { auth } from '../auth/auth-middleware';
 import { imapNestedFolders } from './message-middleware';
 
@@ -77,7 +78,6 @@ router.get('/label/:label/:page', (req, res) => {
     .then(emails => {
       Messages.getEmailCountByLabelForUser(label, 1) // temp user_id = 1
         .then(count => {
-          console.log(emails);
           res.send({
             totalCount: count,
             messages: emails
@@ -189,21 +189,40 @@ router.post('/search/:column/:page', (req, res) => {
 });
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
-router.get('/', auth, async (req, res) => {
-  const { lastMessageId } = req.query;
-  imapService
-    .checkForNewMail(lastMessageId)
-    .then(data => {
-      res.send({
-        lastUid: data,
-        success: true
-      });
+router.post('/', auth, async (req, res) => {
+  let lastMessageId = req.query.lastMessageId === "null" ? null : req.query.lastMessageId;
+
+  if(!lastMessageId){
+    const lastMessage = await Messages.getLastEmailFromUser(1);
+    lastMessageId = lastMessage ? lastMessage.message_id : null;
+  }
+
+  dsService.checkNewMail(lastMessageId, req.decodedToken)
+  .then((response) => {
+    res.send({
+      success: true,
+      lastUid: null
     })
-    .catch(err => {
-      res.send({
-        success: false
-      });
-    });
+  }).catch((err) => {
+    res.send({
+      success: false,
+      lastUid: null,
+      error: err
+    })
+  })
+  // imapService
+  //   .checkForNewMail(lastMessageId)
+  //   .then(data => {
+  //     res.send({
+  //       lastUid: data,
+  //       success: true
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.send({
+  //       success: false
+  //     });
+  //   });
 });
 
 // ********** THE ROUTES WITH STREAMING **********
