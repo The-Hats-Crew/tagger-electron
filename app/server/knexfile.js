@@ -1,3 +1,5 @@
+const {app} = require("electron");
+
 const path = require('path');
 module.exports = {
   development: {
@@ -31,7 +33,7 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: process.resourcesPath ? path.join(process.resourcesPath, "resources/prodemails.db3") : path.resolve(__dirname, "../../resources/prodemails.db3")
+      filename: app ? path.join(app.getAppPath(), "../..", "prodemails.db3") : path.join(__dirname, "/../../resources/prodemails.db3")
     },
     migrations: {
       directory: './data/migrations'
