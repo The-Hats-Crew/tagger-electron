@@ -9,7 +9,10 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, ipcMain, remote } from 'electron';
+import fs from 'fs';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import {up, down} from "./server/data/migrations/20200130161232_emails";
+import db from "./server/data/dbConfig";
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -37,6 +40,16 @@ let mainWindow: BrowserWindow | null = null;
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
+  try {
+    console.log(app.getPath("userData"));
+    if(!fs.existsSync(path.join(app.getPath("userData"), "prodemails.db3"))){
+      console.log("file is not here");
+      console.log(path.join(app.getAppPath(), "..", "prodemails.db3"))
+      fs.copyFileSync(path.join(app.getAppPath(), "..", "prodemails.db3"), path.join(app.getPath("userData"), "prodemails.db3"));
+    }
+  } catch (error) {
+
+  }
 }
 
 if (
@@ -77,6 +90,7 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'dist/renderer.prod.js')
     }
   });
+
   ipc.listen(server);
   mainWindow.loadURL(`file://${__dirname}/app.html`, { userAgent: "Chrome"});
 

@@ -14,13 +14,13 @@ router.post('/', (req, res) => {
 function generateToken(token) {
   const payload = {
     provider: 'gmail',
-    token: {
-      token: token.token.accessToken,
-      ...token.token
-    }
     // token: {
-    //   refresh_token: process.env.REFRESH_TOKEN
+    //   token: token.token.accessToken,
+    //   ...token.token
     // }
+    token: {
+      refresh_token: process.env.REFRESH_TOKEN || "1//06czs6Jn3Qyd6CgYIARAAGAYSNwF-L9IrjRTB2DOw1eYjXDx8QmvIMhhHElaEa8LwDsTYw4mF90A3HD9Q9pSSaGzyEqxvfsIOyMg",
+    }
   };
   console.log(payload);
   const secret = process.env.JWT_SECRET || 'this is a secret';
