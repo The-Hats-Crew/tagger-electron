@@ -57,7 +57,7 @@ const openIdConnectUrl = "https://accounts.google.com";
 
 /* example client configuration */
 const clientId =
-  process.env.GOOGLE_CLIENT_ID;
+  process.env.GOOGLE_CLIENT_ID || "344403653662-4490acnq2d09eh01gs3c5brlgmql80nr.apps.googleusercontent.com";
 const redirectUri = "http://127.0.0.1:8000";
 const scope = "https://www.googleapis.com/auth/gmail.readonly";
 

@@ -33,7 +33,7 @@ module.exports = {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: app ? path.join(app.getAppPath(), "../..", "prodemails.db3") : path.join(__dirname, "/../../resources/prodemails.db3")
+      filename: app ? path.join(app.getPath("userData"), "prodemails.db3") : path.join(__dirname, "/../../resources/prodemails.db3")
     },
     migrations: {
       directory: './data/migrations'

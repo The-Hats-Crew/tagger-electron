@@ -40,11 +40,12 @@ let mainWindow: BrowserWindow | null = null;
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
-  console.log(path.join(app.getAppPath(), "../.."))
   try {
-    if(!fs.existsSync(path.join(app.getAppPath(), "../..", "prodemails.db3"))){
+    console.log(app.getPath("userData"));
+    if(!fs.existsSync(path.join(app.getPath("userData"), "prodemails.db3"))){
       console.log("file is not here");
-      up(db);
+      console.log(path.join(app.getAppPath(), "..", "prodemails.db3"))
+      fs.copyFileSync(path.join(app.getAppPath(), "..", "prodemails.db3"), path.join(app.getPath("userData"), "prodemails.db3"));
     }
   } catch (error) {
 

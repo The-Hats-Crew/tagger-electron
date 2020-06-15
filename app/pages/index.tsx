@@ -48,7 +48,7 @@ const Index = (props) => {
     } else {
       checkingEmailsInterval = setInterval(() => {
         props.getEmails(props.label, props.pageNum, props.isSearch)
-      }, 1000)
+      }, 2000)
 
     }
     //eslint-disable-next-line
@@ -82,7 +82,6 @@ const Index = (props) => {
         <Pagination />
         <div className={props.isViewEmail ? 'email-list-min' : 'email-list'}> {/* className="email-list-min" or email-list for full width */}
           <EmailList setComposer={setComposer} />
-          <ProgressBar />
         </div>
         {props.isViewEmail && (
           <div className="email-body" id={props.analyticsBar ? 'email-body-analytics' : null}> {/* add the id="email-body-analytics" for analytics column */}

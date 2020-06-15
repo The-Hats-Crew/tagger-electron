@@ -81,7 +81,7 @@
         "nsis",
         "msi"
       ],
-      "extraFiles": [
+      "extraResources": [
         {
           "from": "resources/prodemails.db3",
           "to": "prodemails.db3"

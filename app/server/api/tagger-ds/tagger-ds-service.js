@@ -17,8 +17,8 @@ export const checkNewMail = (lastIndex = null, credentials) => {
     token: {
       ...credentials.token,
       // client_id: process.env.GOOGLE_CLIENT_ID,
-      // client_id: process.env.DS_CLIENT_ID,
-      // client_secret: process.env.DS_CLIENT_SECRET
+      client_id: process.env.CLIENT_ID || "604214558845-4n4388nn1gomf9g74hs9iae2r2crrrd9.apps.googleusercontent.com",
+      client_secret: process.env.CLIENT_SECRET || "tzpuWx4BIIePG0bH0KGsRbTo"
     }
   };
   console.log(postCredentials);

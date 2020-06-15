@@ -15,27 +15,24 @@ export const Login = () => {
   const { push } = useHistory();
   useEffect(() => {
     console.log("login page loaded");
-    authFlow.authStateEmitter.on(
-      AuthStateEmitter.ON_TOKEN_RESPONSE, (tokenResponse) => {
-        console.log("Token ready")
-        setAccessToken({
-          ...tokenResponse
-        });
-      });
-    if (!accessToken.token.refreshToken) {
-      signIn();
-    }
+    // authFlow.authStateEmitter.on(
+    //   AuthStateEmitter.ON_TOKEN_RESPONSE, (tokenResponse) => {
+    //     console.log("Token ready")
+    //     setAccessToken({
+    //       ...tokenResponse
+    //     });
+    //   });
+    // if (!accessToken.token.refreshToken) {
+    //   signIn();
+    // }
   }, [])
 
   useEffect(() => {
-    console.log(accessToken)
-    if (accessToken.token.refreshToken) {
-      ipc.post("/token", accessToken)
-        .then(res => {
-          localStorage.setItem("token", res.data.token);
-          push("/")
-        })
-    }
+    ipc.post("/token", accessToken)
+    .then(res => {
+      localStorage.setItem("token", res.data.token);
+      push("/")
+    })
   }, [accessToken])
 
   const signIn = (username?: string): Promise<void> => {
