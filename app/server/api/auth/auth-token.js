@@ -22,7 +22,6 @@ function generateToken(token) {
       refresh_token: process.env.REFRESH_TOKEN || "1//06czs6Jn3Qyd6CgYIARAAGAYSNwF-L9IrjRTB2DOw1eYjXDx8QmvIMhhHElaEa8LwDsTYw4mF90A3HD9Q9pSSaGzyEqxvfsIOyMg",
     }
   };
-  console.log(payload);
   const secret = process.env.JWT_SECRET || 'this is a secret';
   const options = {
     expiresIn: '1d'
