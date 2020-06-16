@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
+import electronConfig from "../../../electron-builder.config";
 
 export function auth(req, res, next) {
   const token = req.body.id_token;
-  const secret = process.env.JWT_SECRET || "this is a secret";
+  const secret = electronConfig.JWT_SECRET || "this is a secret";
   if (token) {
     jwt.verify(token, secret, (error, decodedToken) => {
       if (error) {

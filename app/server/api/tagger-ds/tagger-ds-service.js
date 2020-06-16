@@ -1,6 +1,7 @@
 import axios from 'axios';
 import fetch from 'node-fetch';
-import fs from 'fs';
+import electronConfig from "../../../electron-builder.config";
+import oboe from 'oboe';
 import {
   parsedMessagesToDBO,
   addMessagesToDb,
@@ -8,7 +9,7 @@ import {
 } from './helpers/tagger-ds-processors';
 import { Readable } from 'stream';
 const io = require('socket.io')(3001);
-const dsUrl = process.env.DS_PROD_URL || 'http://localhost:5000';
+const dsUrl = electronConfig.DS_PROD_URL;
 
 export const checkNewMail = (lastIndex = null, credentials) => {
   const postCredentials = {
@@ -16,9 +17,9 @@ export const checkNewMail = (lastIndex = null, credentials) => {
     recent_id: lastIndex,
     token: {
       ...credentials.token,
-      // client_id: process.env.GOOGLE_CLIENT_ID,
-      client_id: process.env.CLIENT_ID || "604214558845-4n4388nn1gomf9g74hs9iae2r2crrrd9.apps.googleusercontent.com",
-      client_secret: process.env.CLIENT_SECRET || "tzpuWx4BIIePG0bH0KGsRbTo"
+      client_id:
+        electronConfig.CLIENT_ID,
+      client_secret: electronConfig.CLIENT_SECRET
     }
   };
   console.log(postCredentials);
@@ -35,47 +36,42 @@ export const checkNewMail = (lastIndex = null, credentials) => {
       })
         .then(response => {
           if(response.status !== 200){
-            return [response.body, new Error("Something went wrong")]
+            reject({
+              status: response.status,
+              error: "Something went wrong"
+            })
           }
-          return [response.body, null]
+          return response.body
         })
-        .then(([stream, error]) => {
-          let str = '';
-          let message;
-          let count = 0;
-          if(error) reject(error)
-
-          stream.on('data', async chunk => {
-            str += chunk.toString('utf-8');
-            try {
-              message = JSON.parse(str);
+        .then(stream => {
+          oboe(stream)
+            .done(async message => {
+              if (!message) {
+                console.log('aborted');
+                this.abort();
+              }
               console.log(message);
-
-              console.log('New client connected');
               socket.emit('total_count', message.total_count);
               socket.emit('current_count', message.current_count);
-
-              str = '';
               const parsedMessage = parsedMessagesToDBO(message);
               const addedMessage = await addMessagesToDb(parsedMessage);
               addTagsToDb(addedMessage.id, message.smartTags);
-            } catch (error) {}
-          });
+            })
+            .fail(() => {
+              console.log('failed');
+              reject({ error: 'Something went wrong' });
+            });
 
           stream.on('finish', () => {
-            socket.emit("FromAPI", null)
+            console.log('finished');
+            socket.emit('FromAPI', null);
             resolve('done');
           });
-        })
+
+          stream.on("error", (err) => {
+            console.log(err);
+          })
+        });
     });
   });
-  // return axios.post(dsUrl + "/api/sync", {
-  //   provider: credentials.provider,
-  //   recent_id: lastIndex,
-  //   token: {
-  //     ...credentials.token,
-  //     client_id: process.env.CLIENT_ID,
-  //     client_secret: process.env.CLIENT_SECRET
-  //   }
-  // })
 };

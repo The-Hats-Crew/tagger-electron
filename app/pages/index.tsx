@@ -48,20 +48,18 @@ const Index = (props) => {
     } else {
       checkingEmailsInterval = setInterval(() => {
         props.getEmails(props.label, props.pageNum, props.isSearch)
-      }, 2000)
+      }, 500)
 
     }
     //eslint-disable-next-line
     return () => clearInterval(checkingEmailsInterval);
   }, [props.label, props.isChecking])
 
-  useEffect(() => {
-    console.log(props.failed);
-    if (props.failed) {
-      localStorage.removeItem("token");
-      push('/login')
-    }
-  }, [props.failed])
+  // useEffect(() => {
+  //   console.log(props.failed);
+  //   if (props.failed) {
+  //   }
+  // }, [props.failed])
 
   function setupBackgroundTimers(numMinutes) {
     const token = localStorage.getItem("token");
