@@ -58,3 +58,4 @@ electron-builder.env
 
 # config file
 electron-builder.config.js
+electron-builder.config.ts

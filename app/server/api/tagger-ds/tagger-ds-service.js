@@ -1,7 +1,6 @@
 import axios from 'axios';
 import fetch from 'node-fetch';
-import fs from 'fs';
-import path from 'path';
+import electronConfig from "../../../electron-builder.config";
 import oboe from 'oboe';
 import {
   parsedMessagesToDBO,
@@ -10,7 +9,7 @@ import {
 } from './helpers/tagger-ds-processors';
 import { Readable } from 'stream';
 const io = require('socket.io')(3001);
-const dsUrl = process.env.DS_PROD_URL || 'http://localhost:5000';
+const dsUrl = electronConfig.DS_PROD_URL;
 
 export const checkNewMail = (lastIndex = null, credentials) => {
   const postCredentials = {
@@ -19,9 +18,8 @@ export const checkNewMail = (lastIndex = null, credentials) => {
     token: {
       ...credentials.token,
       client_id:
-        process.env.CLIENT_ID ||
-        '604214558845-4n4388nn1gomf9g74hs9iae2r2crrrd9.apps.googleusercontent.com',
-      client_secret: process.env.CLIENT_SECRET || 'tzpuWx4BIIePG0bH0KGsRbTo'
+        electronConfig.CLIENT_ID,
+      client_secret: electronConfig.CLIENT_SECRET
     }
   };
   console.log(postCredentials);

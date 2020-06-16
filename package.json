@@ -225,7 +225,6 @@
     "electron-builder": "^22.6.1",
     "electron-devtools-installer": "^2.2.4",
     "electron-rebuild": "^1.10.0",
-    "electron-webpack": "^2.8.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",

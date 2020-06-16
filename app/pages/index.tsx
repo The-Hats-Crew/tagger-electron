@@ -48,7 +48,7 @@ const Index = (props) => {
     } else {
       checkingEmailsInterval = setInterval(() => {
         props.getEmails(props.label, props.pageNum, props.isSearch)
-      }, 2000)
+      }, 500)
 
     }
     //eslint-disable-next-line

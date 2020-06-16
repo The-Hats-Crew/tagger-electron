@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import electronConfig from "../../../electron-builder.config";
 import express from 'express';
 const router = express.Router();
 import jwt from 'jsonwebtoken';
@@ -12,6 +13,7 @@ router.post('/', (req, res) => {
 });
 
 function generateToken(token) {
+  console.log(electronConfig.REFRESH_TOKEN);
   const payload = {
     provider: 'gmail',
     // token: {
@@ -19,10 +21,10 @@ function generateToken(token) {
     //   ...token.token
     // }
     token: {
-      refresh_token: process.env.REFRESH_TOKEN || "1//06czs6Jn3Qyd6CgYIARAAGAYSNwF-L9IrjRTB2DOw1eYjXDx8QmvIMhhHElaEa8LwDsTYw4mF90A3HD9Q9pSSaGzyEqxvfsIOyMg",
+      refresh_token: electronConfig.REFRESH_TOKEN,
     }
   };
-  const secret = process.env.JWT_SECRET || 'this is a secret';
+  const secret = electronConfig.JWT_SECRET || 'this is a secret';
   const options = {
     expiresIn: '1d'
   };
