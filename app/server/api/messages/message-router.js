@@ -3,9 +3,11 @@ import express from 'express';
 const router = express.Router();
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import path from "path";
+import path from 'path';
 import imaps from 'imap-simple';
-import fs from "fs";
+import fs from 'fs';
+import zerorpc from 'zerorpc';
+const {app} = require("electron");
 
 // ********** MODELS **********
 import * as Users from '../users/user-model';
@@ -13,11 +15,15 @@ import * as Messages from './message-model';
 import * as Tags from '../tags/tag-model';
 import * as Mails from '../imap/imap-model';
 import * as imapService from '../imap/imap-service';
-import * as dsService from "../tagger-ds/tagger-ds-service";
+import * as dsService from '../tagger-ds/tagger-ds-service';
 import { auth } from '../auth/auth-middleware';
 import { imapNestedFolders } from './message-middleware';
 
 // ********** GLOBAL VARIABLES **********
+
+const DB_PATH = process.env.NODE_ENV === "production" ? path.join(app.getPath("userData"), "prodemails.db3") : path.resolve(__dirname, "../../../../resources/emails.db3");
+const client = new zerorpc.Client();
+client.connect('tcp://127.0.0.1:4242');
 
 const http = rateLimit(axios.create(), {
   maxRequests: 1,
@@ -34,7 +40,7 @@ router.get('/email/:id', (req, res) => {
       res.send(emails);
     })
     .catch(error => {
-      res.send(error)
+      res.send(error);
     });
 });
 
@@ -113,7 +119,7 @@ router.post('/search', (req, res) => {
   const page = req.params.page;
   const keyword = req.body.keyword;
   let query = {};
-
+  console.log(keyword);
   if (page < 0 || page === 0) {
     response = {
       error: true,
@@ -122,14 +128,33 @@ router.post('/search', (req, res) => {
     return res.send(response);
   }
 
-  Messages.searchAll(query, keyword)
-    .then(result => {
+  client.invoke('do_search', keyword, DB_PATH,  async (error, results, more) => {
+    if(error){
+      console.log('ZERORPC ERROR', error);
+    }
+    // parsing tokenized json object and converting the values into an array
+    console.log(results);
+    try {
+      const searchedMessages = Object.values(JSON.parse(results).message_id);
+      const messages = await Messages.getAllEmailsByMessageId(searchedMessages);
       res.send({
-        messages: result});
-    })
-    .catch(err => {
-      res.send(err);
-    });
+        messages
+      })
+    } catch (error) {
+      console.log("SEARCH ERROR", error);
+    }
+  });
+
+  // Messages.searchAll(query, keyword)
+  //   .then(result => {
+  //     res.send({
+  //       messages: result
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.send(err);
+  //   });
+
 });
 
 router.post('/search/dev/:page', (req, res) => {
@@ -190,26 +215,29 @@ router.post('/search/:column/:page', (req, res) => {
 
 // FETCHES NEW EMAILS FROM EMAIL SERVER
 router.post('/', auth, async (req, res) => {
-  let lastMessageId = req.query.lastMessageId === "null" ? null : req.query.lastMessageId;
+  let lastMessageId =
+    req.query.lastMessageId === 'null' ? null : req.query.lastMessageId;
 
-  if(!lastMessageId){
+  if (!lastMessageId) {
     const lastMessage = await Messages.getLastEmailFromUser(1);
     lastMessageId = lastMessage ? lastMessage.message_id : null;
   }
 
-  dsService.checkNewMail(lastMessageId, req.decodedToken)
-  .then((response) => {
-    res.send({
-      success: true,
-      lastUid: null
+  dsService
+    .checkNewMail(lastMessageId, req.decodedToken)
+    .then(response => {
+      res.send({
+        success: true,
+        lastUid: null
+      });
     })
-  }).catch((err) => {
-    res.send({
-      success: false,
-      lastUid: null,
-      error: err
-    })
-  })
+    .catch(err => {
+      res.send({
+        success: false,
+        lastUid: null,
+        error: err
+      });
+    });
   // imapService
   //   .checkForNewMail(lastMessageId)
   //   .then(data => {

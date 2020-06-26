@@ -5,7 +5,8 @@ import oboe from 'oboe';
 import {
   parsedMessagesToDBO,
   addMessagesToDb,
-  addTagsToDb
+  addTagsToDb,
+  addSentiment
 } from './helpers/tagger-ds-processors';
 import { Readable } from 'stream';
 const io = require('socket.io')(3001);
@@ -50,12 +51,12 @@ export const checkNewMail = (lastIndex = null, credentials) => {
                 console.log('aborted');
                 this.abort();
               }
-              console.log(message);
               socket.emit('total_count', message.total_count);
               socket.emit('current_count', message.current_count);
               const parsedMessage = parsedMessagesToDBO(message);
               const addedMessage = await addMessagesToDb(parsedMessage);
               addTagsToDb(addedMessage.id, message.smartTags);
+              addSentiment(addedMessage.id, message.sentiment);
             })
             .fail(() => {
               console.log('failed');

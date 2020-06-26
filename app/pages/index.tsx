@@ -49,17 +49,17 @@ const Index = (props) => {
       checkingEmailsInterval = setInterval(() => {
         props.getEmails(props.label, props.pageNum, props.isSearch)
       }, 500)
-
     }
     //eslint-disable-next-line
     return () => clearInterval(checkingEmailsInterval);
   }, [props.label, props.isChecking])
 
-  // useEffect(() => {
-  //   console.log(props.failed);
-  //   if (props.failed) {
-  //   }
-  // }, [props.failed])
+  useEffect(() => {
+    if (props.authFailed) {
+      localStorage.removeItem("token");
+      push("/login")
+    }
+  }, [props.authFailed])
 
   function setupBackgroundTimers(numMinutes) {
     const token = localStorage.getItem("token");
@@ -100,6 +100,7 @@ const mapStateToProps = ({ analyticsbar, viewEmail, operation, inbox }) => ({
   isChecking: operation.isChecking,
   lastUid: operation.lastUid,
   label: inbox.label,
+  authFailed: operation.authFailed
 })
 
 export default connect(mapStateToProps, { checkNewMail, setLastUid, getEmails, setCurrentCount, setTotalCount })(Index);

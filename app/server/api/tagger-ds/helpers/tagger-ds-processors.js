@@ -1,5 +1,6 @@
 import * as messagesModel from '../../messages/message-model';
 import * as tagsModel from "../../tags/tag-model";
+import * as saModel from "../../sentiment_analysis/sa-model";
 
 export function parsedMessagesToDBO(msg) {
   const mimeType = msg.payload.mimeType;
@@ -61,5 +62,15 @@ export function addTagsToDb(id, tags){
     .catch(err => {
       console.log(`${tag} was not added`, err)
     })
+  })
+}
+
+export function addSentiment(id, sentiment){
+  saModel.add(id, sentiment)
+  .then(sa => {
+    console.log(`${sa} was added`)
+  })
+  .catch(err => {
+    console.log(`${sa} was not added`, err)
   })
 }

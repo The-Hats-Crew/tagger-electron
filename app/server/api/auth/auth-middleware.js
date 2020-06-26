@@ -1,14 +1,16 @@
 import jwt from 'jsonwebtoken';
-import electronConfig from "../../../electron-builder.config";
+import electronConfig from '../../../electron-builder.config';
 
+// eslint-disable-next-line import/prefer-default-export
 export function auth(req, res, next) {
   const token = req.body.id_token;
-  const secret = electronConfig.JWT_SECRET || "this is a secret";
+  const secret = electronConfig.JWT_SECRET || 'this is a secret';
   if (token) {
     jwt.verify(token, secret, (error, decodedToken) => {
       if (error) {
         res.send({
-          error: "Error, you can't pass. Token not verified. Try login again"
+          error: "Error, you can't pass. Token not verified. Try login again",
+          authFailed: true
         });
       } else {
         req.decodedToken = decodedToken;

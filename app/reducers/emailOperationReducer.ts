@@ -13,6 +13,7 @@ const initialState = {
   failed: false
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export const setOperationReducer = (
   state = initialState,
   { type, payload }
@@ -46,8 +47,9 @@ export const setOperationReducer = (
       return {
         ...state,
         isChecking: false,
-        failed: true
-      }
+        failed: true,
+        authFailed: payload.authFailed
+      };
     default:
       return state;
   }

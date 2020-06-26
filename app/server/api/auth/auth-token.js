@@ -26,7 +26,7 @@ function generateToken(token) {
   };
   const secret = electronConfig.JWT_SECRET || 'this is a secret';
   const options = {
-    expiresIn: '1d'
+    expiresIn: '30d'
   };
   return jwt.sign(payload, secret, options);
 }
