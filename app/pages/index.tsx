@@ -17,13 +17,15 @@ const Index = (props) => {
   const [composer, setComposer] = useState(false);
   const { push } = useHistory();
 
+  let emailInterval;
+  const numMinutes = 10;
+  if (!props.isChecking) {
+    console.log("SETTING EMAIL INTERVAL")
+    emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
+  }
+
   useEffect(() => {
-    let emailInterval;
-    const numMinutes = 10;
-    if (!props.isChecking) {
-      console.log("SETTING EMAIL INTERVAL")
-      emailInterval = setInterval(setupBackgroundTimers(numMinutes), 1000 * 60 * numMinutes);
-    }
+
     const socket = io("http://localhost:3001");
 
     socket.on("total_count", totalCount => {
@@ -34,10 +36,8 @@ const Index = (props) => {
       props.setCurrentCount(currentCount);
     })
 
-
-    return () => clearInterval(emailInterval)
+    // return () => clearInterval(emailInterval)
   }, [])
-
 
   useEffect(() => {
     let checkingEmailsInterval;
@@ -54,12 +54,6 @@ const Index = (props) => {
     return () => clearInterval(checkingEmailsInterval);
   }, [props.label, props.isChecking])
 
-  useEffect(() => {
-    if (props.authFailed) {
-      localStorage.removeItem("token");
-      push("/login")
-    }
-  }, [props.authFailed])
 
   function setupBackgroundTimers(numMinutes) {
     const token = localStorage.getItem("token");

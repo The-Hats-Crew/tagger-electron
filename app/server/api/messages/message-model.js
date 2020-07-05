@@ -6,6 +6,12 @@ export function getLastMessageByUserId(userId) {
     .first();
 }
 
+export function getOldestMessageByUserId(userId) {
+  return db('emails')
+    .orderBy('date', 'asc')
+    .first();
+}
+
 export function getEmailList(query, label) {
   return db('emails')
     .limit(query.limit)
@@ -26,7 +32,9 @@ export function getEmailCountByLabelForUser(label, userId) {
 export function getEmail(id) {
   return db('emails')
     .orderBy('date', 'desc')
-    .where('id', id);
+    .where('id', id)
+    .orWhere('message_id', id)
+    .first();
 }
 
 export function getAllEmailsByMessageId(ids) {

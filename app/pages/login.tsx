@@ -1,49 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { IpcClient } from 'ipc-express';
 import { ipcRenderer } from 'electron';
-import { useHistory } from "react-router-dom";
-import { AuthFlow, AuthStateEmitter } from "../utils/auth/flow";
+import { useHistory } from 'react-router-dom';
+import getAuthenticated from '../utils/auth/googleFlow';
 
 export const Login = () => {
-  const [accessToken, setAccessToken] = useState({
-    token: {
-      refreshToken: null
-    }
-  });
-  const authFlow = new AuthFlow();
+  const [accessToken, setAccessToken] = useState(null);
   const ipc = new IpcClient(ipcRenderer);
   const { push } = useHistory();
-  useEffect(() => {
-    console.log("login page loaded");
-    // authFlow.authStateEmitter.on(
-    //   AuthStateEmitter.ON_TOKEN_RESPONSE, (tokenResponse) => {
-    //     console.log("Token ready")
-    //     setAccessToken({
-    //       ...tokenResponse
-    //     });
-    //   });
-    // if (!accessToken.token.refreshToken) {
-    //   signIn();
-    // }
-  }, [])
 
   useEffect(() => {
-    ipc.post("/token", accessToken)
-    .then(res => {
-      localStorage.setItem("token", res.data.token);
-      push("/")
-    })
+    console.log('login page loaded');
+    if (!localStorage.getItem('token')) {
+      const run = async () => {
+        const tokens = await getAuthenticated();
+        setAccessToken(tokens);
+      };
+      run();
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      console.log(accessToken);
+      ipc.post("/token", accessToken)
+        .then(res => {
+          localStorage.setItem('token', res.data.token);
+          push('/');
+        })
+        .catch(err => console.log(err));
+    }
   }, [accessToken])
 
-  const signIn = (username?: string): Promise<void> => {
-    return authFlow.fetchServiceConfiguration().then(
-      () => authFlow.makeAuthorizationRequest(username));
-  }
-
-  return (
-    <div>
-    </div>
-  )
+  return <div />;
 }
 
 export default Login;

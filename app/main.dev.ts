@@ -10,9 +10,7 @@
  */
 import path from 'path';
 import fs from 'fs';
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { up, down } from './server/data/migrations/20200130161232_emails';
-import db from './server/data/dbConfig';
+import { app, BrowserWindow, ipcMain, protocol } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
